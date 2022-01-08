@@ -1,0 +1,1 @@
+const String kApiBaseUrl = 'https://api.covid19api.com';

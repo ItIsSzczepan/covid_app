@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'record.g.dart';
+
+@JsonSerializable()
 class Record extends Equatable {
   final int newConfirmed;
   final int totalConfirmed;
@@ -16,6 +20,8 @@ class Record extends Equatable {
       required this.newRecovered,
       required this.totalRecovered});
 
+  factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
+
   @override
   List<Object?> get props => [
         newConfirmed,
@@ -25,4 +31,5 @@ class Record extends Equatable {
         newRecovered,
         totalRecovered
       ];
+
 }
