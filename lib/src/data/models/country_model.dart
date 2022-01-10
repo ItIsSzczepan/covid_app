@@ -1,3 +1,4 @@
+import 'package:covid_app/src/data/models/record_model.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:json_annotation/json_annotation.dart';
 

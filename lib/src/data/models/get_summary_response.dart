@@ -9,9 +9,9 @@ class GetSummaryResponse {
 
   factory GetSummaryResponse.fromJson(Map<String, dynamic> json) {
     List<Country> list = [];
-    json['Global']['country'] = "Global";
-    json['Global']['countryCode'] = "GL";
-    json['Global']['slug'] = "global";
+    json['Global']['Country'] = "Global";
+    json['Global']['CountryCode'] = "GL";
+    json['Global']['Slug'] = "global";
     list.add(CountryModel.fromJson(json['Global']));
 
     (json['Countries'] as List).forEach((element) {
