@@ -7,20 +7,20 @@ part of 'record_model.dart';
 // **************************************************************************
 
 RecordModel _$RecordModelFromJson(Map<String, dynamic> json) => RecordModel(
-      json['newConfirmed'],
-      json['totalConfirmed'],
-      json['newDeaths'],
-      json['totalDeaths'],
-      json['newRecovered'],
-      json['totalRecovered'],
+      todayCases: json['todayCases'] as int,
+      cases: json['cases'] as int,
+      todayDeaths: json['todayDeaths'] as int,
+      deaths: json['deaths'] as int,
+      todayRecovered: json['todayRecovered'] as int,
+      recovered: json['recovered'] as int,
     );
 
 Map<String, dynamic> _$RecordModelToJson(RecordModel instance) =>
     <String, dynamic>{
-      'newConfirmed': instance.newConfirmed,
-      'totalConfirmed': instance.totalConfirmed,
-      'newDeaths': instance.newDeaths,
-      'totalDeaths': instance.totalDeaths,
-      'newRecovered': instance.newRecovered,
-      'totalRecovered': instance.totalRecovered,
+      'cases': instance.cases,
+      'todayCases': instance.todayCases,
+      'todayDeaths': instance.todayDeaths,
+      'deaths': instance.deaths,
+      'todayRecovered': instance.todayRecovered,
+      'recovered': instance.recovered,
     };

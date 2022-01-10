@@ -24,25 +24,23 @@ void main() {
     const Country(
         country: "Poland",
         countryCode: "PL",
-        slug: "poland",
-        record: Record(
-            newConfirmed: 3,
-            totalConfirmed: 10,
-            newDeaths: 1,
-            totalDeaths: 2,
-            newRecovered: 2,
-            totalRecovered: 3)),
+        flag: "poland",
+            cases: 3,
+            todayCases: 10,
+            todayDeaths: 1,
+            deaths: 2,
+            todayRecovered: 2,
+            recovered: 3),
     const Country(
         country: "Germany",
         countryCode: "DE",
-        slug: "germany",
-        record: Record(
-            newConfirmed: 30,
-            totalConfirmed: 100,
-            newDeaths: 10,
-            totalDeaths: 20,
-            newRecovered: 20,
-            totalRecovered: 30))
+        flag: "germany",
+            cases: 30,
+            todayCases: 100,
+            todayDeaths: 10,
+            deaths: 20,
+            todayRecovered: 20,
+            recovered: 30)
   ];
 
   final Failure exampleFailure = Failure("message");

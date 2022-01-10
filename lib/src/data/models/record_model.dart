@@ -5,15 +5,20 @@ part 'record_model.g.dart';
 
 @JsonSerializable()
 class RecordModel extends Record {
-  const RecordModel(newConfirmed, totalConfirmed, newDeaths, totalDeaths,
-      newRecovered, totalRecovered)
+  const RecordModel(
+      {required int todayCases,
+        required int cases,
+        required int todayDeaths,
+        required int deaths,
+        required int todayRecovered,
+        required int recovered})
       : super(
-            newConfirmed: newConfirmed,
-            totalConfirmed: totalConfirmed,
-            newDeaths: newDeaths,
-            totalDeaths: totalDeaths,
-            newRecovered: newRecovered,
-            totalRecovered: totalRecovered);
+            cases: cases,
+            todayCases: todayCases,
+            todayDeaths: todayDeaths,
+            deaths: deaths,
+            todayRecovered: todayRecovered,
+            recovered: recovered);
 
   factory RecordModel.fromJson(Map<String, dynamic> json) => _$RecordModelFromJson(json);
 }

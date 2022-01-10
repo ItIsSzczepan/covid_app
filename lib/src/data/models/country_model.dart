@@ -6,12 +6,36 @@ part 'country_model.g.dart';
 
 @JsonSerializable()
 class CountryModel extends Country {
-  const CountryModel({country, countryCode, slug, record})
+  @JsonKey(name: 'iso2', readValue: readCountryInfo)
+  final String countryCode;
+  @JsonKey(name: 'flag', readValue: readCountryInfo)
+  final String flag;
+
+  const CountryModel(
+      {required String country,
+      required this.countryCode,
+      required this.flag,
+      required int todayCases,
+      required int cases,
+      required int todayDeaths,
+      required int deaths,
+      required int todayRecovered,
+      required int recovered})
       : super(
             country: country,
             countryCode: countryCode,
-            slug: slug,
-            record: record);
+            flag: flag,
+            cases: cases,
+            todayCases: todayCases,
+            todayDeaths: todayDeaths,
+            deaths: deaths,
+            todayRecovered: todayRecovered,
+            recovered: recovered);
 
-  factory CountryModel.fromJson(Map<String, dynamic> json) => _$CountryModelFromJson(json);
+  factory CountryModel.fromJson(Map<String, dynamic> json) =>
+      _$CountryModelFromJson(json);
+
+  static Object? readCountryInfo(Map json, String name) {
+    return json['countryInfo'][name];
+  }
 }
