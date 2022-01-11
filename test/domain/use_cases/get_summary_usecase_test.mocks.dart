@@ -6,6 +6,7 @@ import 'dart:async' as _i4;
 
 import 'package:covid_app/src/core/failure.dart' as _i5;
 import 'package:covid_app/src/domain/entities/country.dart' as _i6;
+import 'package:covid_app/src/domain/entities/record.dart' as _i7;
 import 'package:covid_app/src/domain/repositories/covid_repository.dart' as _i3;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -30,9 +31,16 @@ class MockCovidRepository extends _i1.Mock implements _i3.CovidRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Country>>> getSummary() =>
-      (super.noSuchMethod(Invocation.method(#getSummary, []),
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Country>>>
+      getAllCountriesListData() => (super.noSuchMethod(
+          Invocation.method(#getAllCountriesListData, []),
           returnValue: Future<_i2.Either<_i5.Failure, List<_i6.Country>>>.value(
               _FakeEither_0<_i5.Failure, List<_i6.Country>>())) as _i4
           .Future<_i2.Either<_i5.Failure, List<_i6.Country>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i7.Record>> getGlobal() =>
+      (super.noSuchMethod(Invocation.method(#getGlobal, []),
+              returnValue: Future<_i2.Either<_i5.Failure, _i7.Record>>.value(
+                  _FakeEither_0<_i5.Failure, _i7.Record>()))
+          as _i4.Future<_i2.Either<_i5.Failure, _i7.Record>>);
 }

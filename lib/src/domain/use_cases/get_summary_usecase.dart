@@ -11,7 +11,7 @@ class GetSummaryUseCase implements UseCase<List<Country>, void>{
 
   @override
   Future<Either<Failure, List<Country>>> call({void params}){
-    return _covidRepository.getSummary();
+    return _covidRepository.getAllCountriesListData();
   }
   
 }

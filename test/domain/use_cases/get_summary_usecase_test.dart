@@ -46,24 +46,24 @@ void main() {
   final Failure exampleFailure = Failure("message");
 
   test("should get countries summary list", () async {
-    when(fakeCovidRepository.getSummary())
+    when(fakeCovidRepository.getAllCountriesListData())
         .thenAnswer((_) async => Right(exampleList));
 
     final result = await useCase();
 
     expect(result, Right(exampleList));
-    verify(fakeCovidRepository.getSummary());
+    verify(fakeCovidRepository.getAllCountriesListData());
     verifyNoMoreInteractions(fakeCovidRepository);
   });
 
   test("should get error", () async {
-    when(fakeCovidRepository.getSummary())
+    when(fakeCovidRepository.getAllCountriesListData())
         .thenAnswer((_) async => Left(exampleFailure));
 
     final result = await useCase();
 
     expect(result, Left(exampleFailure));
-    verify(fakeCovidRepository.getSummary());
+    verify(fakeCovidRepository.getAllCountriesListData());
     verifyNoMoreInteractions(fakeCovidRepository);
   });
 }

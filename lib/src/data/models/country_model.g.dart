@@ -8,8 +8,8 @@ part of 'country_model.dart';
 
 CountryModel _$CountryModelFromJson(Map<String, dynamic> json) => CountryModel(
       country: json['country'] as String,
-      countryCode: CountryModel.readCountryInfo(json, 'iso2') as String,
-      flag: CountryModel.readCountryInfo(json, 'flag') as String,
+      countryCode: CountryModel.readCountryInfo(json, 'iso2') as String? ?? '',
+      flag: CountryModel.readCountryInfo(json, 'flag') as String? ?? '',
       todayCases: json['todayCases'] as int,
       cases: json['cases'] as int,
       todayDeaths: json['todayDeaths'] as int,

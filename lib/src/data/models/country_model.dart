@@ -6,9 +6,9 @@ part 'country_model.g.dart';
 
 @JsonSerializable()
 class CountryModel extends Country {
-  @JsonKey(name: 'iso2', readValue: readCountryInfo)
+  @JsonKey(name: 'iso2', readValue: readCountryInfo, defaultValue: "")
   final String countryCode;
-  @JsonKey(name: 'flag', readValue: readCountryInfo)
+  @JsonKey(name: 'flag', readValue: readCountryInfo, defaultValue: "")
   final String flag;
 
   const CountryModel(

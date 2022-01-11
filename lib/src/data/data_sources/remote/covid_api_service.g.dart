@@ -8,7 +8,7 @@ part of 'covid_api_service.dart';
 
 class _CovidApiService implements CovidApiService {
   _CovidApiService(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://api.covid19api.com';
+    baseUrl ??= 'https://disease.sh';
   }
 
   final Dio _dio;
@@ -16,18 +16,20 @@ class _CovidApiService implements CovidApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<GetSummaryResponse>> getSummary() async {
+  Future<HttpResponse<List<CountryModel>>> getAllCountriesList() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<GetSummaryResponse>>(
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<HttpResponse<List<CountryModel>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/summary',
+                .compose(_dio.options, '/v3/covid-19/countries',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GetSummaryResponse.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => CountryModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart';
-import 'package:covid_app/src/data/models/get_summary_response.dart';
+import 'package:covid_app/src/data/models/country_model.dart';
+import 'package:covid_app/src/data/models/get_all_countries_list_response.dart';
 import 'package:covid_app/src/data/repositories/covid_repository_impl.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:covid_app/src/domain/entities/record.dart';
@@ -25,8 +26,8 @@ void main() {
     covidRepositoryImpl = CovidRepositoryImpl(mockCovidApiService);
   });
 
-  List<Country> exampleList = [
-    const Country(
+  List<CountryModel> exampleList = [
+    const CountryModel(
         country: "Global",
         countryCode: "GL",
         flag: "global",
@@ -37,7 +38,7 @@ void main() {
             deaths: 67,
             todayRecovered: 2,
             recovered: 32),
-    const Country(
+    const CountryModel(
         country: "Poland",
         countryCode: "PL",
         flag: "poland",
@@ -48,7 +49,7 @@ void main() {
             deaths: 70,
             todayRecovered: 0,
             recovered: 3),
-    const Country(
+    const CountryModel(
         country: "Germany",
         countryCode: "DE",
         flag: "germany",
@@ -61,12 +62,12 @@ void main() {
   ];
 
   test("description", () async {
-    when(mockCovidApiService.getSummary()).thenAnswer((_) async => HttpResponse(
-        GetSummaryResponse(countries: exampleList),
+    when(mockCovidApiService.getAllCountriesList()).thenAnswer((_) async => HttpResponse(
+        exampleList,
         Response(
             requestOptions:
                 RequestOptions(path: "https://api.covid19api.com/summary"))));
-    final result = await covidRepositoryImpl.getSummary();
+    final result = await covidRepositoryImpl.getAllCountriesListData();
 
     expect(result, Right(exampleList));
   });

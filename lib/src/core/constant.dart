@@ -1,1 +1,1 @@
-const String kApiBaseUrl = 'https://api.covid19api.com';
+const String kApiBaseUrl = 'https://disease.sh';
