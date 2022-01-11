@@ -1,7 +1,7 @@
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart';
 import 'package:covid_app/src/data/repositories/covid_repository_impl.dart';
-import 'package:covid_app/src/domain/use_cases/get_summary_usecase.dart';
-import 'package:covid_app/src/presentation/cubit/summary_cubit.dart';
+import 'package:covid_app/src/domain/use_cases/get_all_countries_list_data_usecase.dart';
+import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 
@@ -15,7 +15,7 @@ initializeDependencies(){
   injector.registerSingleton<CovidApiService>(CovidApiService(injector()));
   injector.registerSingleton<CovidRepository>(CovidRepositoryImpl(injector()));
 
-  injector.registerSingleton<GetSummaryUseCase>(GetSummaryUseCase(injector()));
+  injector.registerSingleton<GetAllCountriesListDataUseCase>(GetAllCountriesListDataUseCase(injector()));
 
-  injector.registerFactory<SummaryCubit>(() => SummaryCubit(injector()));
+  injector.registerFactory<CountriesListCubit>(() => CountriesListCubit(injector()));
 }

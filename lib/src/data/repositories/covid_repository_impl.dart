@@ -22,9 +22,13 @@ class CovidRepositoryImpl implements CovidRepository{
   }
 
   @override
-  Future<Either<Failure, Record>> getGlobal() {
-    // TODO: implement getGlobal
-    throw UnimplementedError();
+  Future<Either<Failure, Record>> getGlobal() async{
+    try{
+      final httpResponse = await _covidApiService.getGlobal();
+      return Right(httpResponse.data);
+    }on DioError catch(e){
+      return Left(Failure(e.message));
+    }
   }
 
 }

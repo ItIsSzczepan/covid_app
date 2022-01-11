@@ -2,22 +2,22 @@ import 'package:covid_app/src/core/failure.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:covid_app/src/domain/entities/record.dart';
 import 'package:covid_app/src/domain/repositories/covid_repository.dart';
-import 'package:covid_app/src/domain/use_cases/get_summary_usecase.dart';
+import 'package:covid_app/src/domain/use_cases/get_all_countries_list_data_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'get_summary_usecase_test.mocks.dart';
+import 'get_countries_list_data_usecase_test.mocks.dart';
 
 @GenerateMocks([CovidRepository])
 void main() {
-  late GetSummaryUseCase useCase;
+  late GetAllCountriesListDataUseCase useCase;
   late CovidRepository fakeCovidRepository;
 
   setUp(() {
     fakeCovidRepository = MockCovidRepository();
-    useCase = GetSummaryUseCase(fakeCovidRepository);
+    useCase = GetAllCountriesListDataUseCase(fakeCovidRepository);
   });
 
   final List<Country> exampleList = [
@@ -45,7 +45,7 @@ void main() {
 
   final Failure exampleFailure = Failure("message");
 
-  test("should get countries summary list", () async {
+  test("should get countries data list", () async {
     when(fakeCovidRepository.getAllCountriesListData())
         .thenAnswer((_) async => Right(exampleList));
 

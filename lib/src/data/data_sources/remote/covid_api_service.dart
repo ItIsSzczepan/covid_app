@@ -1,4 +1,5 @@
 import 'package:covid_app/src/data/models/country_model.dart';
+import 'package:covid_app/src/data/models/record_model.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:dio/dio.dart';
 import 'package:covid_app/src/core/constant.dart';
@@ -13,4 +14,7 @@ abstract class CovidApiService{
 
   @GET('/v3/covid-19/countries')
   Future<HttpResponse<List<CountryModel>>> getAllCountriesList();
+
+  @GET('/v3/covid-19/all')
+  Future<HttpResponse<RecordModel>> getGlobal();
 }

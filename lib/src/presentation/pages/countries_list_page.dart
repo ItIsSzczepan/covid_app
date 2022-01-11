@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:covid_app/src/presentation/cubit/summary_cubit.dart';
+import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,21 +9,21 @@ class SummaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SummaryCubit cubit = BlocProvider.of<SummaryCubit>(context);
+    CountriesListCubit cubit = BlocProvider.of<CountriesListCubit>(context);
     return Scaffold(
       body: SafeArea(
-          child: BlocBuilder<SummaryCubit, SummaryState>(
+          child: BlocBuilder<CountriesListCubit, CountriesListState>(
             builder: (BuildContext context, state) {
-              if (state is SummaryDone) {
+              if (state is CountriesListDone) {
                 return _buildDashboard();
               }
-              if (state is SummaryLoading) {
+              if (state is CountriesListLoading) {
                 return const CircularProgressIndicator.adaptive();
               }
-              if (state is SummaryInitial) {
+              if (state is CountriesListInitial) {
                 cubit.refresh();
               }
-              if (state is SummaryError) {
+              if (state is CountriesListError) {
                 return Center(child: Text(state.message));
               }
               return Container();
@@ -33,9 +33,9 @@ class SummaryPage extends StatelessWidget {
   }
 
   Widget _buildDashboard() {
-    return BlocBuilder<SummaryCubit, SummaryState>(
+    return BlocBuilder<CountriesListCubit, CountriesListState>(
       builder: (context, state) {
-        state = state as SummaryDone;
+        state = state as CountriesListDone;
         int countriesLength = state.countries.length;
         return Column(
           children: [
@@ -43,7 +43,7 @@ class SummaryPage extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: () {
                   int rand = Random().nextInt(countriesLength);
-                  BlocProvider.of<SummaryCubit>(context).selectCountry(rand);
+                  BlocProvider.of<CountriesListCubit>(context).selectCountry(rand);
                 },
                 child: Text(state.countries[state.selectedCountry].country),
               ),

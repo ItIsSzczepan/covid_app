@@ -7,6 +7,7 @@ import 'dart:async' as _i4;
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart'
     as _i3;
 import 'package:covid_app/src/data/models/country_model.dart' as _i5;
+import 'package:covid_app/src/data/models/record_model.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:retrofit/dio.dart' as _i2;
 
@@ -35,4 +36,10 @@ class MockCovidApiService extends _i1.Mock implements _i3.CovidApiService {
           returnValue: Future<_i2.HttpResponse<List<_i5.CountryModel>>>.value(
               _FakeHttpResponse_0<List<_i5.CountryModel>>())) as _i4
           .Future<_i2.HttpResponse<List<_i5.CountryModel>>>);
+  @override
+  _i4.Future<_i2.HttpResponse<_i6.RecordModel>> getGlobal() =>
+      (super.noSuchMethod(Invocation.method(#getGlobal, []),
+              returnValue: Future<_i2.HttpResponse<_i6.RecordModel>>.value(
+                  _FakeHttpResponse_0<_i6.RecordModel>()))
+          as _i4.Future<_i2.HttpResponse<_i6.RecordModel>>);
 }
