@@ -17,7 +17,7 @@ class CovidRepositoryImpl implements CovidRepository{
       final httpResponse = await _covidApiService.getAllCountriesList();
       return Right(httpResponse.data);
     }on DioError catch(e){
-      return Left(Failure(e.message + "Hello "));
+      return Left(Failure(e.message));
     }
   }
 

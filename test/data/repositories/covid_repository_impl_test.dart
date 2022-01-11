@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart';
 import 'package:covid_app/src/data/models/country_model.dart';
-import 'package:covid_app/src/data/models/get_all_countries_list_response.dart';
 import 'package:covid_app/src/data/repositories/covid_repository_impl.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:covid_app/src/domain/entities/record.dart';
