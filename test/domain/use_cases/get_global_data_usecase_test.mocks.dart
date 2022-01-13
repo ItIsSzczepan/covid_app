@@ -43,4 +43,26 @@ class MockCovidRepository extends _i1.Mock implements _i3.CovidRepository {
               returnValue: Future<_i2.Either<_i5.Failure, _i7.Record>>.value(
                   _FakeEither_0<_i5.Failure, _i7.Record>()))
           as _i4.Future<_i2.Either<_i5.Failure, _i7.Record>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Country>>>
+      getAllFavoritesCountries() => (super.noSuchMethod(
+          Invocation.method(#getAllFavoritesCountries, []),
+          returnValue: Future<_i2.Either<_i5.Failure, List<_i6.Country>>>.value(
+              _FakeEither_0<_i5.Failure, List<_i6.Country>>())) as _i4
+          .Future<_i2.Either<_i5.Failure, List<_i6.Country>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, void>> addCountryToFavorites(
+          _i6.Country? country) =>
+      (super.noSuchMethod(Invocation.method(#addCountryToFavorites, [country]),
+              returnValue: Future<_i2.Either<_i5.Failure, void>>.value(
+                  _FakeEither_0<_i5.Failure, void>()))
+          as _i4.Future<_i2.Either<_i5.Failure, void>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, void>> removeCountryFromFavorites(
+          _i6.Country? country) =>
+      (super.noSuchMethod(
+              Invocation.method(#removeCountryFromFavorites, [country]),
+              returnValue: Future<_i2.Either<_i5.Failure, void>>.value(
+                  _FakeEither_0<_i5.Failure, void>()))
+          as _i4.Future<_i2.Either<_i5.Failure, void>>);
 }

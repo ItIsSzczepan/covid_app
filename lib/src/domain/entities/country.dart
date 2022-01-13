@@ -1,6 +1,11 @@
 import 'package:covid_app/src/domain/entities/record.dart';
+import 'package:floor/floor.dart';
 
+@entity
 class Country extends Record {
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
+
   final String country;
   final String countryCode;
   final String flag;
@@ -14,7 +19,8 @@ class Country extends Record {
       required int todayDeaths,
       required int deaths,
       required int todayRecovered,
-      required int recovered})
+      required int recovered,
+      this.id})
       : super(
             cases: cases,
             todayCases: todayCases,

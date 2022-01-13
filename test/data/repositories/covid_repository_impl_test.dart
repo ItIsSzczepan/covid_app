@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:covid_app/src/core/constant.dart';
+import 'package:covid_app/src/data/data_sources/local/app_database.dart';
+import 'package:covid_app/src/data/data_sources/local/country_dao.dart';
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart';
 import 'package:covid_app/src/data/models/country_model.dart';
 import 'package:covid_app/src/data/models/record_model.dart';
@@ -16,14 +19,19 @@ import 'package:dio/dio.dart';
 
 import 'covid_repository_impl_test.mocks.dart';
 
-@GenerateMocks([CovidApiService])
+@GenerateMocks([CovidApiService, AppDatabase, CountryDao])
 void main() {
   late CovidRepositoryImpl covidRepositoryImpl;
   late MockCovidApiService mockCovidApiService;
+  late MockAppDatabase mockAppDatabase;
+  late MockCountryDao mockCountryDao;
 
   setUp(() {
     mockCovidApiService = MockCovidApiService();
-    covidRepositoryImpl = CovidRepositoryImpl(mockCovidApiService);
+    mockAppDatabase = MockAppDatabase();
+    mockCountryDao = MockCountryDao();
+    covidRepositoryImpl =
+        CovidRepositoryImpl(mockCovidApiService, mockAppDatabase);
   });
 
   List<CountryModel> exampleList = [
@@ -59,6 +67,17 @@ void main() {
         recovered: 20),
   ];
 
+  Country testCountry = const CountryModel(
+      country: "Germany",
+      countryCode: "DE",
+      flag: "germany",
+      cases: 100,
+      todayCases: 3000,
+      todayDeaths: 27,
+      deaths: 90,
+      todayRecovered: 12,
+      recovered: 20);
+
   RecordModel exampleRecord = const RecordModel(
       cases: 100,
       todayCases: 5000,
@@ -77,6 +96,7 @@ void main() {
     final result = await covidRepositoryImpl.getAllCountriesListData();
 
     expect(result, Right(exampleList));
+
     verify(mockCovidApiService.getAllCountriesList());
     verifyNoMoreInteractions(mockCovidApiService);
   });
@@ -90,7 +110,79 @@ void main() {
     final result = await covidRepositoryImpl.getGlobal();
 
     expect(result, Right(exampleRecord));
+
     verify(mockCovidApiService.getGlobal());
     verifyNoMoreInteractions(mockCovidApiService);
+  });
+
+  test("getAllFavoritesCountries should return list of countries", () async {
+    when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
+    when(mockCountryDao.findALlCountries())
+        .thenAnswer((_) async => exampleList);
+
+    final result = await covidRepositoryImpl.getAllFavoritesCountries();
+
+    expect(result, Right(exampleList));
+
+    verify(mockCountryDao.findALlCountries());
+    verify(mockAppDatabase.countryDao);
+
+    verifyNoMoreInteractions(mockCountryDao);
+    verifyNoMoreInteractions(mockAppDatabase);
+
+    verifyZeroInteractions(mockCovidApiService);
+  });
+
+  test("test addCountryToFavorites", () async {
+    when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
+    when(mockCountryDao.insertCountry(testCountry)).thenAnswer((value) async {
+      exampleList.add(value.positionalArguments.first);
+    });
+
+    final result = await covidRepositoryImpl.addCountryToFavorites(testCountry);
+
+    expect(result, const Right(null));
+
+    verify(mockCountryDao.insertCountry(testCountry));
+    verify(mockAppDatabase.countryDao);
+
+    verifyNoMoreInteractions(mockCountryDao);
+    verifyNoMoreInteractions(mockAppDatabase);
+
+    verifyZeroInteractions(mockCovidApiService);
+
+    when(mockCountryDao.findALlCountries())
+        .thenAnswer((realInvocation) async => exampleList);
+
+    final result2 = await covidRepositoryImpl.getAllFavoritesCountries();
+
+    expect(result2, Right(exampleList));
+  });
+
+  test("removeCountryFromFavorites should remove country", () async {
+    when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
+    when(mockCountryDao.findALlCountries())
+        .thenAnswer((_) async => exampleList);
+    when(mockCountryDao.deleteCountry(testCountry))
+        .thenAnswer((realInvocation) async {
+      exampleList.remove(realInvocation.positionalArguments.first);
+    });
+
+    final result =
+        await covidRepositoryImpl.removeCountryFromFavorites(testCountry);
+
+    expect(result, const Right(null));
+
+    verify(mockCountryDao.deleteCountry(testCountry));
+    verify(mockAppDatabase.countryDao);
+
+    verifyNoMoreInteractions(mockCountryDao);
+    verifyNoMoreInteractions(mockAppDatabase);
+
+    verifyZeroInteractions(mockCovidApiService);
+
+    final result2 = await covidRepositoryImpl.getAllFavoritesCountries();
+
+    expect(result2, Right(exampleList));
   });
 }

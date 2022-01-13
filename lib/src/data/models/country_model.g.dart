@@ -16,6 +16,7 @@ CountryModel _$CountryModelFromJson(Map<String, dynamic> json) => CountryModel(
       deaths: json['deaths'] as int,
       todayRecovered: json['todayRecovered'] as int,
       recovered: json['recovered'] as int,
+      id: CountryModel.readCountryInfo(json, '_id') as int?,
     );
 
 Map<String, dynamic> _$CountryModelToJson(CountryModel instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$CountryModelToJson(CountryModel instance) =>
       'todayRecovered': instance.todayRecovered,
       'recovered': instance.recovered,
       'country': instance.country,
+      '_id': instance.id,
       'iso2': instance.countryCode,
       'flag': instance.flag,
     };

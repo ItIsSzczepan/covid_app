@@ -6,6 +6,8 @@ part 'country_model.g.dart';
 
 @JsonSerializable()
 class CountryModel extends Country {
+  @JsonKey(name: '_id', readValue: readCountryInfo, includeIfNull: true)
+  final int? id;
   @JsonKey(name: 'iso2', readValue: readCountryInfo, defaultValue: "")
   final String countryCode;
   @JsonKey(name: 'flag', readValue: readCountryInfo, defaultValue: "")
@@ -20,7 +22,8 @@ class CountryModel extends Country {
       required int todayDeaths,
       required int deaths,
       required int todayRecovered,
-      required int recovered})
+      required int recovered,
+      this.id})
       : super(
             country: country,
             countryCode: countryCode,
@@ -30,7 +33,8 @@ class CountryModel extends Country {
             todayDeaths: todayDeaths,
             deaths: deaths,
             todayRecovered: todayRecovered,
-            recovered: recovered);
+            recovered: recovered,
+            id: id);
 
   factory CountryModel.fromJson(Map<String, dynamic> json) =>
       _$CountryModelFromJson(json);

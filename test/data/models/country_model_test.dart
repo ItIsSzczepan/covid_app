@@ -55,6 +55,11 @@ void main() {
     expect(model.country, isA<String>());
   });
 
+  test("method fromJson should return country id", () {
+    expect(model.id, 4);
+    expect(model.id, isA<int>());
+  });
+
   test("method fromJson should return country code", () {
     expect(model.countryCode, "AF");
     expect(model.countryCode, isA<String>());

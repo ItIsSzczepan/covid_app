@@ -7,4 +7,9 @@ abstract class CovidRepository{
   // API
   Future<Either<Failure, List<Country>>> getAllCountriesListData();
   Future<Either<Failure, Record>> getGlobal();
+
+  // DATABASE
+  Future<Either<Failure, List<Country>>> getAllFavoritesCountries();
+  Future<Either<Failure, void>> addCountryToFavorites(Country country);
+  Future<Either<Failure, void>> removeCountryFromFavorites(Country country);
 }

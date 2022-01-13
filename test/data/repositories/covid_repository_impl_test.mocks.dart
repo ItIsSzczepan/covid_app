@@ -4,12 +4,16 @@
 
 import 'dart:async' as _i4;
 
+import 'package:covid_app/src/data/data_sources/local/app_database.dart' as _i9;
+import 'package:covid_app/src/data/data_sources/local/country_dao.dart' as _i3;
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart'
-    as _i3;
-import 'package:covid_app/src/data/models/country_model.dart' as _i5;
-import 'package:covid_app/src/data/models/record_model.dart' as _i6;
+    as _i6;
+import 'package:covid_app/src/data/models/country_model.dart' as _i7;
+import 'package:covid_app/src/data/models/record_model.dart' as _i8;
+import 'package:covid_app/src/domain/entities/country.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:retrofit/dio.dart' as _i2;
+import 'package:sqflite/sqflite.dart' as _i5;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -22,24 +26,101 @@ import 'package:retrofit/dio.dart' as _i2;
 
 class _FakeHttpResponse_0<T> extends _i1.Fake implements _i2.HttpResponse<T> {}
 
+class _FakeCountryDao_1 extends _i1.Fake implements _i3.CountryDao {}
+
+class _FakeStreamController_2<T> extends _i1.Fake
+    implements _i4.StreamController<T> {}
+
+class _FakeDatabaseExecutor_3 extends _i1.Fake implements _i5.DatabaseExecutor {
+}
+
 /// A class which mocks [CovidApiService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCovidApiService extends _i1.Mock implements _i3.CovidApiService {
+class MockCovidApiService extends _i1.Mock implements _i6.CovidApiService {
   MockCovidApiService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.HttpResponse<List<_i5.CountryModel>>> getAllCountriesList() =>
+  _i4.Future<_i2.HttpResponse<List<_i7.CountryModel>>> getAllCountriesList() =>
       (super.noSuchMethod(Invocation.method(#getAllCountriesList, []),
-          returnValue: Future<_i2.HttpResponse<List<_i5.CountryModel>>>.value(
-              _FakeHttpResponse_0<List<_i5.CountryModel>>())) as _i4
-          .Future<_i2.HttpResponse<List<_i5.CountryModel>>>);
+          returnValue: Future<_i2.HttpResponse<List<_i7.CountryModel>>>.value(
+              _FakeHttpResponse_0<List<_i7.CountryModel>>())) as _i4
+          .Future<_i2.HttpResponse<List<_i7.CountryModel>>>);
   @override
-  _i4.Future<_i2.HttpResponse<_i6.RecordModel>> getGlobal() =>
+  _i4.Future<_i2.HttpResponse<_i8.RecordModel>> getGlobal() =>
       (super.noSuchMethod(Invocation.method(#getGlobal, []),
-              returnValue: Future<_i2.HttpResponse<_i6.RecordModel>>.value(
-                  _FakeHttpResponse_0<_i6.RecordModel>()))
-          as _i4.Future<_i2.HttpResponse<_i6.RecordModel>>);
+              returnValue: Future<_i2.HttpResponse<_i8.RecordModel>>.value(
+                  _FakeHttpResponse_0<_i8.RecordModel>()))
+          as _i4.Future<_i2.HttpResponse<_i8.RecordModel>>);
+}
+
+/// A class which mocks [AppDatabase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAppDatabase extends _i1.Mock implements _i9.AppDatabase {
+  MockAppDatabase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.CountryDao get countryDao =>
+      (super.noSuchMethod(Invocation.getter(#countryDao),
+          returnValue: _FakeCountryDao_1()) as _i3.CountryDao);
+  @override
+  _i4.StreamController<String> get changeListener =>
+      (super.noSuchMethod(Invocation.getter(#changeListener),
+              returnValue: _FakeStreamController_2<String>())
+          as _i4.StreamController<String>);
+  @override
+  set changeListener(_i4.StreamController<String>? _changeListener) =>
+      super.noSuchMethod(Invocation.setter(#changeListener, _changeListener),
+          returnValueForMissingStub: null);
+  @override
+  _i5.DatabaseExecutor get database =>
+      (super.noSuchMethod(Invocation.getter(#database),
+          returnValue: _FakeDatabaseExecutor_3()) as _i5.DatabaseExecutor);
+  @override
+  set database(_i5.DatabaseExecutor? _database) =>
+      super.noSuchMethod(Invocation.setter(#database, _database),
+          returnValueForMissingStub: null);
+  @override
+  _i4.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+}
+
+/// A class which mocks [CountryDao].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCountryDao extends _i1.Mock implements _i3.CountryDao {
+  MockCountryDao() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<List<_i10.Country>> findALlCountries() =>
+      (super.noSuchMethod(Invocation.method(#findALlCountries, []),
+              returnValue: Future<List<_i10.Country>>.value(<_i10.Country>[]))
+          as _i4.Future<List<_i10.Country>>);
+  @override
+  _i4.Future<List<String>?> findAllCountriesNames() => (super.noSuchMethod(
+      Invocation.method(#findAllCountriesNames, []),
+      returnValue: Future<List<String>?>.value()) as _i4.Future<List<String>?>);
+  @override
+  _i4.Future<void> insertCountry(_i10.Country? country) =>
+      (super.noSuchMethod(Invocation.method(#insertCountry, [country]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> updateCountry(_i10.Country? country) =>
+      (super.noSuchMethod(Invocation.method(#updateCountry, [country]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> deleteCountry(_i10.Country? country) =>
+      (super.noSuchMethod(Invocation.method(#deleteCountry, [country]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
 }
