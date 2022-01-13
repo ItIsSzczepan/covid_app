@@ -9,7 +9,6 @@ part 'global_data_state.dart';
 
 class GlobalDataCubit extends Cubit<GlobalDataState> {
   final GetGlobalDataUseCase _getSummaryUseCase;
-  int _selected = 0;
 
   GlobalDataCubit(this._getSummaryUseCase) : super(GlobalDataInitial());
 

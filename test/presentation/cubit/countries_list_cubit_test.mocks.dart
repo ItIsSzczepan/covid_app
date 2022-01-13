@@ -5,6 +5,7 @@
 import 'dart:async' as _i4;
 
 import 'package:covid_app/src/core/failure.dart' as _i5;
+import 'package:covid_app/src/core/params.dart' as _i7;
 import 'package:covid_app/src/domain/entities/country.dart' as _i6;
 import 'package:covid_app/src/domain/use_cases/get_all_countries_list_data_usecase.dart'
     as _i3;
@@ -32,7 +33,8 @@ class MockGetAllCountriesListDataUseCase extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Country>>> call({void params}) =>
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Country>>> call(
+          {_i7.Params? params}) =>
       (super.noSuchMethod(Invocation.method(#call, [], {#params: params}),
           returnValue: Future<_i2.Either<_i5.Failure, List<_i6.Country>>>.value(
               _FakeEither_0<_i5.Failure, List<_i6.Country>>())) as _i4
