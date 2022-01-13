@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CountriesListCubit>(create: (_) => injector()..refresh(),
+    return BlocProvider<CountriesListCubit>(create: (_) => injector()..load(),
     child: const MaterialApp(
         home: SummaryPage(),
     ),);

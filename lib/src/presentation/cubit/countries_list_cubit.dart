@@ -11,7 +11,7 @@ class CountriesListCubit extends Cubit<CountriesListState> {
 
   CountriesListCubit(this._getSummaryUseCase) : super(CountriesListInitial());
 
-  refresh() async {
+  load() async {
     emit(CountriesListLoading());
     _getSummaryUseCase.call().then((value) => value.fold(
         (l) => emit(CountriesListError(l.message)),

@@ -21,7 +21,7 @@ class SummaryPage extends StatelessWidget {
                 return const CircularProgressIndicator.adaptive();
               }
               if (state is CountriesListInitial) {
-                cubit.refresh();
+                cubit.load();
               }
               if (state is CountriesListError) {
                 return Center(child: Text(state.message));
@@ -35,28 +35,17 @@ class SummaryPage extends StatelessWidget {
   Widget _buildDashboard() {
     return BlocBuilder<CountriesListCubit, CountriesListState>(
       builder: (context, state) {
-        state = state as CountriesListDone;
-        int countriesLength = state.countries.length;
-        return Column(
-          children: [
-            SizedBox(
-              child: OutlinedButton(
-                onPressed: () {
-                  int rand = Random().nextInt(countriesLength);
-                  BlocProvider.of<CountriesListCubit>(context).selectCountry(rand);
-                },
-                child: Text(state.countries[state.selectedCountry].country),
-              ),
-              height: 50.0,
-            ),
-            Text(state.countries[state.selectedCountry].cases.toString()),
-            Text(state.countries[state.selectedCountry].todayCases.toString()),
-            Text(state.countries[state.selectedCountry].todayRecovered.toString()),
-            Text(state.countries[state.selectedCountry].recovered.toString()),
-            Text(state.countries[state.selectedCountry].todayDeaths.toString()),
-            Text(state.countries[state.selectedCountry].deaths.toString()),
-          ],
-        );
+        return ListView.separated(itemBuilder: (_, index){
+          return Column(children: [
+            Text((state as CountriesListDone).countries[index].country),
+            Text(state.countries[index].cases.toString()),
+            Text(state.countries[index].todayCases.toString()),
+            Text(state.countries[index].todayRecovered.toString()),
+            Text(state.countries[index].recovered.toString()),
+            Text(state.countries[index].todayDeaths.toString()),
+            Text(state.countries[index].deaths.toString()),
+          ],);
+        }, separatorBuilder: (BuildContext context, int index) {return const Divider();}, itemCount: (state as CountriesListDone).countries.length,);
       },
     );
   }

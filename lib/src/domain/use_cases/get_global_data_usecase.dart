@@ -10,7 +10,7 @@ class GetGlobalDataUseCase implements UseCase<Record, void>{
   GetGlobalDataUseCase(this._covidRepository);
 
   @override
-  Future<Either<Failure, Record>> call({void params}) {
+  Future<Either<Failure, Record>> call({params}) {
     return _covidRepository.getGlobal();
   }
 }

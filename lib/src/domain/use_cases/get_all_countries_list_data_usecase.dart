@@ -10,7 +10,7 @@ class GetAllCountriesListDataUseCase implements UseCase<List<Country>, void>{
   GetAllCountriesListDataUseCase(this._covidRepository);
 
   @override
-  Future<Either<Failure, List<Country>>> call({void params}){
+  Future<Either<Failure, List<Country>>> call({params}){
     return _covidRepository.getAllCountriesListData();
   }
   
