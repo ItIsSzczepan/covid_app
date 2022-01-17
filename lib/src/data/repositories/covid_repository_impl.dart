@@ -34,9 +34,9 @@ class CovidRepositoryImpl implements CovidRepository{
   }
 
   @override
-  Future<Either<Failure, List<Country>>> getAllFavoritesCountries() async {
+  Future<Either<Failure, Stream<List<Country>>>> getAllFavoritesCountries() async {
     try{
-      final result = await _appDatabase.countryDao.findALlCountries();
+      var result = _appDatabase.countryDao.findALlCountriesStream();
       return Right(result);
     }catch (e){
       return Left(Failure(e.toString()));

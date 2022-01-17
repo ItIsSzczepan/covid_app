@@ -7,6 +7,9 @@ abstract class CountryDao{
   @Query("SELECT * FROM $kCountryTableName")
   Future<List<Country>> findALlCountries();
 
+  @Query("SELECT * FROM $kCountryTableName")
+  Stream<List<Country>> findALlCountriesStream();
+
   @Query("SELECT country FROM $kCountryTableName")
   Future<List<String>?> findAllCountriesNames();
 

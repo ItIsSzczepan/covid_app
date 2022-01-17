@@ -98,7 +98,7 @@ class _$AppDatabase extends AppDatabase {
 
 class _$CountryDao extends CountryDao {
   _$CountryDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database),
+      : _queryAdapter = QueryAdapter(database, changeListener),
         _countryInsertionAdapter = InsertionAdapter(
             database,
             'Country',
@@ -113,7 +113,8 @@ class _$CountryDao extends CountryDao {
                   'deaths': item.deaths,
                   'todayRecovered': item.todayRecovered,
                   'recovered': item.recovered
-                }),
+                },
+            changeListener),
         _countryUpdateAdapter = UpdateAdapter(
             database,
             'Country',
@@ -129,7 +130,8 @@ class _$CountryDao extends CountryDao {
                   'deaths': item.deaths,
                   'todayRecovered': item.todayRecovered,
                   'recovered': item.recovered
-                }),
+                },
+            changeListener),
         _countryDeletionAdapter = DeletionAdapter(
             database,
             'Country',
@@ -145,7 +147,8 @@ class _$CountryDao extends CountryDao {
                   'deaths': item.deaths,
                   'todayRecovered': item.todayRecovered,
                   'recovered': item.recovered
-                });
+                },
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -173,6 +176,24 @@ class _$CountryDao extends CountryDao {
             todayRecovered: row['todayRecovered'] as int,
             recovered: row['recovered'] as int,
             id: row['id'] as int?));
+  }
+
+  @override
+  Stream<List<Country>> findALlCountriesStream() {
+    return _queryAdapter.queryListStream('SELECT * FROM FavoritesCountries',
+        mapper: (Map<String, Object?> row) => Country(
+            country: row['country'] as String,
+            countryCode: row['countryCode'] as String,
+            flag: row['flag'] as String,
+            todayCases: row['todayCases'] as int,
+            cases: row['cases'] as int,
+            todayDeaths: row['todayDeaths'] as int,
+            deaths: row['deaths'] as int,
+            todayRecovered: row['todayRecovered'] as int,
+            recovered: row['recovered'] as int,
+            id: row['id'] as int?),
+        queryableName: 'Country',
+        isView: false);
   }
 
   @override

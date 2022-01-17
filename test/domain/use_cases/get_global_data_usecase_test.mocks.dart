@@ -44,12 +44,13 @@ class MockCovidRepository extends _i1.Mock implements _i3.CovidRepository {
                   _FakeEither_0<_i5.Failure, _i7.Record>()))
           as _i4.Future<_i2.Either<_i5.Failure, _i7.Record>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Country>>>
+  _i4.Future<_i2.Either<_i5.Failure, _i4.Stream<List<_i6.Country>>>>
       getAllFavoritesCountries() => (super.noSuchMethod(
           Invocation.method(#getAllFavoritesCountries, []),
-          returnValue: Future<_i2.Either<_i5.Failure, List<_i6.Country>>>.value(
-              _FakeEither_0<_i5.Failure, List<_i6.Country>>())) as _i4
-          .Future<_i2.Either<_i5.Failure, List<_i6.Country>>>);
+          returnValue: Future<
+                  _i2.Either<_i5.Failure, _i4.Stream<List<_i6.Country>>>>.value(
+              _FakeEither_0<_i5.Failure, _i4.Stream<List<_i6.Country>>>())) as _i4
+          .Future<_i2.Either<_i5.Failure, _i4.Stream<List<_i6.Country>>>>);
   @override
   _i4.Future<_i2.Either<_i5.Failure, void>> addCountryToFavorites(
           _i6.Country? country) =>

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:covid_app/src/core/constant.dart';
@@ -117,14 +118,15 @@ void main() {
 
   test("getAllFavoritesCountries should return list of countries", () async {
     when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
-    when(mockCountryDao.findALlCountries())
-        .thenAnswer((_) async => exampleList);
+    when(mockCountryDao.findALlCountriesStream())
+        .thenAnswer((_) => Stream.value(exampleList));
 
     final result = await covidRepositoryImpl.getAllFavoritesCountries();
 
-    expect(result, Right(exampleList));
+    expect(result.isRight(), true);
+    expect(result, isInstanceOf<Right<dynamic, Stream>>());
 
-    verify(mockCountryDao.findALlCountries());
+    verify(mockCountryDao.findALlCountriesStream());
     verify(mockAppDatabase.countryDao);
 
     verifyNoMoreInteractions(mockCountryDao);
@@ -154,9 +156,9 @@ void main() {
     when(mockCountryDao.findALlCountries())
         .thenAnswer((realInvocation) async => exampleList);
 
-    final result2 = await covidRepositoryImpl.getAllFavoritesCountries();
+    final result2 = await mockAppDatabase.countryDao.findALlCountries();
 
-    expect(result2, Right(exampleList));
+    expect(result2, exampleList);
   });
 
   test("removeCountryFromFavorites should remove country", () async {
@@ -181,8 +183,8 @@ void main() {
 
     verifyZeroInteractions(mockCovidApiService);
 
-    final result2 = await covidRepositoryImpl.getAllFavoritesCountries();
+    final result2 = await mockAppDatabase.countryDao.findALlCountries();
 
-    expect(result2, Right(exampleList));
+    expect(result2, exampleList);
   });
 }

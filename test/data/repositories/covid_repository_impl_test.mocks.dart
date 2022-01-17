@@ -105,6 +105,11 @@ class MockCountryDao extends _i1.Mock implements _i3.CountryDao {
               returnValue: Future<List<_i10.Country>>.value(<_i10.Country>[]))
           as _i4.Future<List<_i10.Country>>);
   @override
+  _i4.Stream<List<_i10.Country>> findALlCountriesStream() =>
+      (super.noSuchMethod(Invocation.method(#findALlCountriesStream, []),
+              returnValue: Stream<List<_i10.Country>>.empty())
+          as _i4.Stream<List<_i10.Country>>);
+  @override
   _i4.Future<List<String>?> findAllCountriesNames() => (super.noSuchMethod(
       Invocation.method(#findAllCountriesNames, []),
       returnValue: Future<List<String>?>.value()) as _i4.Future<List<String>?>);
