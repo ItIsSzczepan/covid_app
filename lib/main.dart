@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CountriesListCubit>(create: (_) => injector()..load(),
     child: const MaterialApp(
-        home: SummaryPage(),
+        home: CountriesListPage(),
     ),);
   }
 }
