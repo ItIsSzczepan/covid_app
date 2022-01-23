@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ class CountriesListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CountriesListCubit cubit = BlocProvider.of<CountriesListCubit>(context);
     return Scaffold(
+      key: const Key("Country list Scaffold"),
       body: SafeArea(
           child: BlocBuilder<CountriesListCubit, CountriesListState>(
             builder: (BuildContext context, state) {

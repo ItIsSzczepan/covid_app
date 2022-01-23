@@ -1,6 +1,5 @@
 import 'package:covid_app/src/data/models/country_model.dart';
 import 'package:covid_app/src/data/models/record_model.dart';
-import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:dio/dio.dart';
 import 'package:covid_app/src/core/constant.dart';
 import 'package:retrofit/dio.dart';

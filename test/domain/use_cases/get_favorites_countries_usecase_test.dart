@@ -1,8 +1,6 @@
 import 'package:covid_app/src/core/failure.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
-import 'package:covid_app/src/domain/entities/record.dart';
 import 'package:covid_app/src/domain/repositories/covid_repository.dart';
-import 'package:covid_app/src/domain/use_cases/get_all_countries_list_data_usecase.dart';
 import 'package:covid_app/src/domain/use_cases/get_favorites_countries_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -52,7 +50,7 @@ void main() {
 
     final result = await useCase();
 
-    expect(await result.getOrElse(() => Stream.empty()).first, exampleList);
+    expect(await result.getOrElse(() => const Stream.empty()).first, exampleList);
     verify(fakeCovidRepository.getAllFavoritesCountries());
     verifyNoMoreInteractions(fakeCovidRepository);
   });

@@ -6,7 +6,6 @@ import 'package:covid_app/src/domain/use_cases/get_all_countries_list_data_useca
 import 'package:covid_app/src/domain/use_cases/get_global_data_usecase.dart';
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/global_data_cubit.dart';
-import 'package:floor/floor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 
@@ -15,9 +14,9 @@ import 'domain/repositories/covid_repository.dart';
 final injector = GetIt.instance;
 
 initializeDependencies()async{
-  final database = await  $FloorAppDatabase.databaseBuilder(kDatabaseName).build();
+  final database = await $FloorAppDatabase.databaseBuilder(kDatabaseName).build();
 
-  injector.registerSingleton<FloorDatabase>(database);
+  injector.registerSingleton<AppDatabase>(database);
   injector.registerSingleton<Dio>(Dio());
 
   injector.registerSingleton<CovidApiService>(CovidApiService(injector()));

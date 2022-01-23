@@ -6,7 +6,6 @@ import 'package:covid_app/src/domain/use_cases/get_favorites_countries_usecase.d
 import 'package:covid_app/src/domain/use_cases/remove_country_from_favorites_usecase.dart';
 import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

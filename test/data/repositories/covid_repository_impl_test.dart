@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:covid_app/src/core/constant.dart';
 import 'package:covid_app/src/data/data_sources/local/app_database.dart';
 import 'package:covid_app/src/data/data_sources/local/country_dao.dart';
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart';
@@ -9,8 +7,6 @@ import 'package:covid_app/src/data/models/country_model.dart';
 import 'package:covid_app/src/data/models/record_model.dart';
 import 'package:covid_app/src/data/repositories/covid_repository_impl.dart';
 import 'package:covid_app/src/domain/entities/country.dart';
-import 'package:covid_app/src/domain/entities/record.dart';
-import 'package:covid_app/src/domain/repositories/covid_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

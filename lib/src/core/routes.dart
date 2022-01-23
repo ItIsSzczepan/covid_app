@@ -18,4 +18,4 @@ import 'package:covid_app/src/presentation/pages/home_page.dart';
     AutoRoute(path: "favorites", name: "FavoritesRouter", page: FavoritesPage)
   ])
 ])
-class $AutoRouter {}
+class $AppRouter {}

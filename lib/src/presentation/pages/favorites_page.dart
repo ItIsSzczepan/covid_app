@@ -5,6 +5,9 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Scaffold(
+      key: Key("Favorites Scaffold"),
+      body: Center(child: Text("Favorites"),),
+    );
   }
 }

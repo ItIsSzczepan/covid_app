@@ -7,8 +7,6 @@
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
-//
-// ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:covid_app/src/presentation/pages/countries_list_page.dart'
@@ -18,8 +16,8 @@ import 'package:covid_app/src/presentation/pages/global_data_page.dart' as _i2;
 import 'package:covid_app/src/presentation/pages/home_page.dart' as _i1;
 import 'package:flutter/material.dart' as _i6;
 
-class AutoRouter extends _i5.RootStackRouter {
-  AutoRouter([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
+class AppRouter extends _i5.RootStackRouter {
+  AppRouter([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -55,36 +53,31 @@ class AutoRouter extends _i5.RootStackRouter {
       ];
 }
 
-/// generated route for
-/// [_i1.HomePage]
+/// generated route for [_i1.HomePage]
 class HomePageRoute extends _i5.PageRouteInfo<void> {
   const HomePageRoute({List<_i5.PageRouteInfo>? children})
-      : super(HomePageRoute.name, path: '/', initialChildren: children);
+      : super(name, path: '/', initialChildren: children);
 
   static const String name = 'HomePageRoute';
 }
 
-/// generated route for
-/// [_i2.GlobalDataPage]
+/// generated route for [_i2.GlobalDataPage]
 class GlobalDataRouter extends _i5.PageRouteInfo<void> {
-  const GlobalDataRouter() : super(GlobalDataRouter.name, path: 'global');
+  const GlobalDataRouter() : super(name, path: 'global');
 
   static const String name = 'GlobalDataRouter';
 }
 
-/// generated route for
-/// [_i3.CountriesListPage]
+/// generated route for [_i3.CountriesListPage]
 class CountriesListRouter extends _i5.PageRouteInfo<void> {
-  const CountriesListRouter()
-      : super(CountriesListRouter.name, path: 'countries');
+  const CountriesListRouter() : super(name, path: 'countries');
 
   static const String name = 'CountriesListRouter';
 }
 
-/// generated route for
-/// [_i4.FavoritesPage]
+/// generated route for [_i4.FavoritesPage]
 class FavoritesRouter extends _i5.PageRouteInfo<void> {
-  const FavoritesRouter() : super(FavoritesRouter.name, path: 'favorites');
+  const FavoritesRouter() : super(name, path: 'favorites');
 
   static const String name = 'FavoritesRouter';
 }

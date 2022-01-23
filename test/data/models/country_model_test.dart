@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:covid_app/src/data/models/country_model.dart';
-import 'package:covid_app/src/data/models/record_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const String testJson = '''{
