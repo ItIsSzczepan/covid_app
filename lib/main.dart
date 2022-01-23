@@ -1,11 +1,13 @@
 import 'package:covid_app/src/core/routes.gr.dart';
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
+import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
+import 'package:covid_app/src/presentation/cubit/global_data_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'src/injector.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeDependencies();
@@ -20,11 +22,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CountriesListCubit>(create: (_) => injector()..load(),
-    child: MaterialApp.router(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CountriesListCubit>(create: (_) =>
+        injector()
+          ..load(),
+        ),
+        BlocProvider<GlobalDataCubit>(
+          create: (context) => injector()..load(),
+        ),
+        BlocProvider<FavoritesCountriesCubit>(
+          create: (context) => injector(),
+        ),
+      ],
+      child: MaterialApp.router(
         routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
-    ),);
+        routeInformationParser: _appRouter.defaultRouteParser(),
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+        ),
+      ),
+    );
   }
 }
 

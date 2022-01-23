@@ -42,7 +42,7 @@ class GlobalDataPage extends StatelessWidget {
     return Column(
       children: [
         _buildDataContainer(
-            context, "Cases", record.todayCases, record.cases, Colors.white24),
+            context, "Cases", record.todayCases, record.cases, Colors.grey),
         Row(children: [
           Flexible(
               flex: 1,
@@ -60,27 +60,30 @@ class GlobalDataPage extends StatelessWidget {
   Widget _buildDataContainer(
       BuildContext context, String title, int today, int all, Color color) {
     return Container(
+      margin: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(7.5),
+      width: double.infinity,
       decoration: BoxDecoration(
         color: color,
-        borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(7.5)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headline5,
           ),
+          SizedBox(height: 4,),
           Text(
             "Today",
-            style: Theme.of(context).textTheme.subtitle1,
           ),
           Text(
             today.toString(),
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline6,
           ),
           Text(
             "All",
-            style: Theme.of(context).textTheme.subtitle2,
           ),
           Text(
             all.toString(),
@@ -108,9 +111,15 @@ class GlobalDataPage extends StatelessWidget {
   Widget _buildPlaceholderBox() {
     return Shimmer.fromColors(
         child: Container(
-          height: 150,
+          height: 125,
+          width: double.infinity,
+          margin: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7.5),
+            color: Colors.black
+          ),
         ),
-        baseColor: Colors.grey,
+        baseColor: Colors.grey.shade300,
         highlightColor: Colors.white);
   }
 
