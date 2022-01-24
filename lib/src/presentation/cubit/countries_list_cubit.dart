@@ -6,14 +6,14 @@ import 'package:equatable/equatable.dart';
 part 'countries_list_state.dart';
 
 class CountriesListCubit extends Cubit<CountriesListState> {
-  final GetAllCountriesListDataUseCase _getSummaryUseCase;
+  final GetAllCountriesListDataUseCase _getAllCountriesListDataUseCase;
   int _selected = 0;
 
-  CountriesListCubit(this._getSummaryUseCase) : super(CountriesListInitial());
+  CountriesListCubit(this._getAllCountriesListDataUseCase) : super(CountriesListInitial());
 
   load() async {
     emit(CountriesListLoading());
-    _getSummaryUseCase.call().then((value) => value.fold(
+    _getAllCountriesListDataUseCase.call().then((value) => value.fold(
         (l) => emit(CountriesListError(l.message)),
         (r) => emit(CountriesListDone(countries: r, selectedCountry: _selected))));
   }

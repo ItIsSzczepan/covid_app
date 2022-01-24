@@ -1,0 +1,102 @@
+import 'package:covid_app/src/core/failure.dart';
+import 'package:covid_app/src/domain/entities/country.dart';
+
+class TestModels{
+  List<Country> get exampleList => [
+    const Country(
+        country: "Poland",
+        countryCode: "PL",
+        flag: "poland",
+        cases: 3,
+        todayCases: 10,
+        todayDeaths: 1,
+        deaths: 2,
+        todayRecovered: 2,
+        recovered: 3),
+    const Country(
+        country: "Germany",
+        countryCode: "DE",
+        flag: "germany",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30)
+  ];
+
+  List<Country> get exampleListLong => [
+    const Country(
+        country: "Poland",
+        countryCode: "PL",
+        flag: "poland",
+        cases: 3,
+        todayCases: 10,
+        todayDeaths: 1,
+        deaths: 2,
+        todayRecovered: 2,
+        recovered: 3),
+    const Country(
+        country: "Germany",
+        countryCode: "DE",
+        flag: "germany",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30),
+    const Country(
+        country: "Denmark",
+        countryCode: "D",
+        flag: "denmark",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30),
+    const Country(
+        country: "Norway",
+        countryCode: "NOR",
+        flag: "norway",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30),
+    const Country(
+        country: "Sweden",
+        countryCode: "SW",
+        flag: "sweden",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30),
+    const Country(
+        country: "Ukraine",
+        countryCode: "UR",
+        flag: "ukraine",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30),
+    const Country(
+        country: "Czechia",
+        countryCode: "CZE",
+        flag: "czechia",
+        cases: 30,
+        todayCases: 100,
+        todayDeaths: 10,
+        deaths: 20,
+        todayRecovered: 20,
+        recovered: 30),
+  ];
+
+  Failure get exampleFailure => Failure("message");
+}
