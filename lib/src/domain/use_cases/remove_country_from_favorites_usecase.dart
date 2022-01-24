@@ -11,7 +11,7 @@ class RemoveCountryFromFavoritesUseCase implements UseCase<void, Country>{
 
   @override
   Future<Either<Failure, void>> call({required Country params}) {
-    return _covidRepository.addCountryToFavorites(params);
+    return _covidRepository.removeCountryFromFavorites(params);
   }
 
 }

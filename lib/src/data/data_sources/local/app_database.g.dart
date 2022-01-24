@@ -164,7 +164,7 @@ class _$CountryDao extends CountryDao {
 
   @override
   Future<List<Country>> findALlCountries() async {
-    return _queryAdapter.queryList('SELECT * FROM FavoritesCountries',
+    return _queryAdapter.queryList('SELECT * FROM Country',
         mapper: (Map<String, Object?> row) => Country(
             country: row['country'] as String,
             countryCode: row['countryCode'] as String,
@@ -180,7 +180,7 @@ class _$CountryDao extends CountryDao {
 
   @override
   Stream<List<Country>> findALlCountriesStream() {
-    return _queryAdapter.queryListStream('SELECT * FROM FavoritesCountries',
+    return _queryAdapter.queryListStream('SELECT * FROM Country',
         mapper: (Map<String, Object?> row) => Country(
             country: row['country'] as String,
             countryCode: row['countryCode'] as String,
@@ -198,7 +198,7 @@ class _$CountryDao extends CountryDao {
 
   @override
   Future<List<String>?> findAllCountriesNames() async {
-    await _queryAdapter.queryNoReturn('SELECT country FROM FavoritesCountries');
+    await _queryAdapter.queryNoReturn('SELECT country FROM Country');
   }
 
   @override

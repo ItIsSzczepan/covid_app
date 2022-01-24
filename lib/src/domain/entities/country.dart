@@ -1,7 +1,8 @@
+import 'package:covid_app/src/core/constant.dart';
 import 'package:covid_app/src/domain/entities/record.dart';
 import 'package:floor/floor.dart';
 
-@entity
+@Entity(tableName: kCountryTableName)
 class Country extends Record {
   @PrimaryKey(autoGenerate: true)
   final int? id;

@@ -26,12 +26,12 @@ class CountryTile extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           Text(
-            "Cases\n${country.todayDeaths}\n${country.deaths}",
+            "Deaths\n${country.todayDeaths}\n${country.deaths}",
             textAlign: TextAlign.left,
             style: const TextStyle(color: Colors.red),
           ),
           Text(
-            "Cases\n${country.todayRecovered}\n${country.recovered}",
+            "Recovered\n${country.todayRecovered}\n${country.recovered}",
             textAlign: TextAlign.left,
             style: const TextStyle(color: Colors.green),
           ),
@@ -42,7 +42,9 @@ class CountryTile extends StatelessWidget {
             inFavorites ? Icons.favorite : Icons.favorite_outline,
             color: inFavorites ? Colors.red : Colors.grey,
           ),
-          onPressed: onIconPress()),
+          onPressed: () {
+            onIconPress();
+          }),
     );
   }
 }
