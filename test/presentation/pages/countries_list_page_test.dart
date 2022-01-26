@@ -147,6 +147,32 @@ void main() {
       expect(findCountryTileAddedToFavorites, findsOneWidget);
     });
 
+    testWidgets("widget should display error click on it",
+        (WidgetTester tester) async {
+      when(addCountryToFavoritesUseCase.call(
+              params: TestModels().exampleList.first))
+          .thenAnswer(
+              (realInvocation) async => Left(TestModels().exampleFailure));
+      await _buildWidget(tester);
+
+      final findCountryTileFavoriteButton = find.byIcon(Icons.favorite_outline);
+      expect(findCountryTileFavoriteButton, findsWidgets);
+
+      await tester.tap(findCountryTileFavoriteButton.first);
+      await tester.pump();
+
+      verify(addCountryToFavoritesUseCase.call(
+          params: TestModels().exampleList.first));
+
+      final findSnackBarWithError =
+          find.widgetWithText(SnackBar, TestModels().exampleFailure.message);
+      expect(findSnackBarWithError, findsOneWidget);
+
+      final findCountryTileAddedToFavorites =
+          find.widgetWithIcon(CountryTile, Icons.favorite);
+      expect(findCountryTileAddedToFavorites, findsNothing);
+    });
+
     testWidgets("widget should change back favorite icon after second tap",
         (WidgetTester tester) async {
       await _buildWidget(tester);
@@ -167,6 +193,41 @@ void main() {
           find.widgetWithIcon(CountryTile, Icons.favorite_outline);
       expect(findCountryTileFavoriteButtonAgain,
           findsNWidgets(TestModels().exampleList.length));
+
+      verify(addCountryToFavoritesUseCase.call(
+          params: TestModels().exampleList.first));
+      verify(removeCountryFromFavoritesUseCase.call(
+          params: TestModels().exampleList.first));
+    });
+
+    testWidgets("widget should display error after second tap",
+        (WidgetTester tester) async {
+      when(removeCountryFromFavoritesUseCase.call(
+              params: TestModels().exampleList.first))
+          .thenAnswer(
+              (realInvocation) async => Left(TestModels().exampleFailure));
+      await _buildWidget(tester);
+
+      final findCountryTileFavoriteButton = find.byIcon(Icons.favorite_outline);
+      expect(findCountryTileFavoriteButton, findsWidgets);
+
+      await tester.tap(findCountryTileFavoriteButton.first);
+      await tester.pump();
+
+      final findCountryTileAddedToFavorites = find.byIcon(Icons.favorite);
+      expect(findCountryTileAddedToFavorites, findsOneWidget);
+
+      await tester.tap(findCountryTileAddedToFavorites.first);
+      await tester.pump();
+
+      final findSnackBarWithError =
+          find.widgetWithText(SnackBar, TestModels().exampleFailure.message);
+      expect(findSnackBarWithError, findsOneWidget);
+
+      final findCountryTileFavoriteButtonAgain =
+          find.widgetWithIcon(CountryTile, Icons.favorite_outline);
+      expect(findCountryTileFavoriteButtonAgain,
+          findsNWidgets(TestModels().exampleList.length - 1));
 
       verify(addCountryToFavoritesUseCase.call(
           params: TestModels().exampleList.first));

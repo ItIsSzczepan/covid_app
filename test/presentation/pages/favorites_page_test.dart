@@ -39,8 +39,7 @@ void main() {
 
   setUp(() {
     List<Country> testList = TestModels().exampleList;
-    _streamController = StreamController<List<Country>>()
-      ..add(testList);
+    _streamController = StreamController<List<Country>>()..add(testList);
     Stream<List<Country>> _stream = _streamController.stream;
 
     when(getFavoritesCountriesUseCase.call())
@@ -127,6 +126,34 @@ void main() {
       expect(findListOfCountriesAfterRemovingOne,
           findsNWidgets(TestModels().exampleList.length - 1));
       expect(findRemovedCountryName, findsNothing);
+    });
+
+    testWidgets("widget should display error", (WidgetTester tester) async {
+      when(removeCountryFromFavoritesUseCase.call(
+              params: TestModels().exampleList.first))
+          .thenAnswer(
+              (realInvocation) async => Left(TestModels().exampleFailure));
+      await tester.pumpWidget(testPage);
+      await tester.pump(const Duration(milliseconds: 200));
+
+      final findListOfCountriesOnBeginning = find.byType(CountryTile);
+      expect(findListOfCountriesOnBeginning,
+          findsNWidgets(TestModels().exampleList.length));
+
+      final findFirstRemoveIcon = find.byIcon(Icons.delete_outlined).first;
+      await tester.tap(findFirstRemoveIcon);
+      await tester.pump();
+
+      final findSnackBarError = find.byType(SnackBar);
+      final findErrorText = find.text(TestModels().exampleFailure.message);
+      final findListOfCountriesAfterRemovingOne = find.byType(CountryTile);
+      final findRemovedCountryName = find.text("Poland");
+
+      expect(findSnackBarError, findsOneWidget);
+      expect(findErrorText, findsOneWidget);
+      expect(findListOfCountriesAfterRemovingOne,
+          findsNWidgets(TestModels().exampleList.length));
+      expect(findRemovedCountryName, findsOneWidget);
     });
 
     testWidgets("widget should display information about list is empty",

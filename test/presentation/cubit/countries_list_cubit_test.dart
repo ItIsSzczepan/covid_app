@@ -56,7 +56,7 @@ void main(){
     },
     expect: () => <CountriesListState>[
       CountriesListLoading(),
-      CountriesListDone(countries: exampleList, selectedCountry: 0)
+      CountriesListDone(countries: exampleList)
     ],
   );
 

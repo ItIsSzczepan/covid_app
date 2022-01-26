@@ -7,7 +7,6 @@ part 'countries_list_state.dart';
 
 class CountriesListCubit extends Cubit<CountriesListState> {
   final GetAllCountriesListDataUseCase _getAllCountriesListDataUseCase;
-  int _selected = 0;
 
   CountriesListCubit(this._getAllCountriesListDataUseCase) : super(CountriesListInitial());
 
@@ -15,11 +14,6 @@ class CountriesListCubit extends Cubit<CountriesListState> {
     emit(CountriesListLoading());
     _getAllCountriesListDataUseCase.call().then((value) => value.fold(
         (l) => emit(CountriesListError(l.message)),
-        (r) => emit(CountriesListDone(countries: r, selectedCountry: _selected))));
-  }
-
-  selectCountry(int index) {
-    _selected = index;
-    emit((state as CountriesListDone).copyWith(index));
+        (r) => emit(CountriesListDone(countries: r))));
   }
 }

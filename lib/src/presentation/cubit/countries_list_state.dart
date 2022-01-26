@@ -16,18 +16,11 @@ class CountriesListLoading extends CountriesListState{
 
 class CountriesListDone extends CountriesListState{
   final List<Country> countries;
-  final int selectedCountry;
 
-  const CountriesListDone({required this.countries, required this.selectedCountry});
+  const CountriesListDone({required this.countries});
 
   @override
-  List<Object?> get props => [countries, selectedCountry];
-
-  CountriesListDone copyWith(int selectedCountry){
-    return CountriesListDone(
-        countries: countries,
-        selectedCountry: selectedCountry);
-  }
+  List<Object?> get props => [countries];
 }
 
 class CountriesListError extends CountriesListState{
