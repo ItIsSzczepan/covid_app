@@ -64,7 +64,7 @@ void main() {
             params: TestModels().exampleList.first))
         .thenAnswer((realInvocation) async {
       _streamController.add([]);
-      return Right(null);
+      return const Right(null);
     });
 
     apiCubit = CountriesListCubit(getAllCountriesListDataUseCase);

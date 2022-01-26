@@ -62,14 +62,18 @@ class CountriesListPage extends StatelessWidget {
 
           return CountryTile(
               country: country,
-              onIconPress: () {
-                if (inFavorites) {
-                  _removeCountryFromFavorites(context, country);
-                } else {
-                  _addCountryToFavorites(context, country);
-                }
-              },
-              inFavorites: inFavorites);
+              buttonWidget: IconButton(
+                  icon: Icon(
+                    inFavorites ? Icons.favorite : Icons.favorite_outline,
+                    color: inFavorites ? Colors.red : Colors.grey,
+                  ),
+                  onPressed: (){
+                    if (inFavorites) {
+                      _removeCountryFromFavorites(context, country);
+                    } else {
+                      _addCountryToFavorites(context, country);
+                    }
+                  }));
         },
         separatorBuilder: (_, i) => const Divider(),
         itemCount: countries.length);

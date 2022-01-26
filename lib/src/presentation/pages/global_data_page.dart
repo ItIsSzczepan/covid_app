@@ -60,8 +60,8 @@ class GlobalDataPage extends StatelessWidget {
   Widget _buildDataContainer(
       BuildContext context, String title, int today, int all, Color color) {
     return Container(
-      margin: EdgeInsets.all(10.0),
-      padding: EdgeInsets.all(7.5),
+      margin: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(7.5),
       width: double.infinity,
       decoration: BoxDecoration(
         color: color,
@@ -74,15 +74,15 @@ class GlobalDataPage extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.headline5,
           ),
-          SizedBox(height: 4,),
-          Text(
+          const SizedBox(height: 4,),
+          const Text(
             "Today",
           ),
           Text(
             today.toString(),
             style: Theme.of(context).textTheme.headline6,
           ),
-          Text(
+          const Text(
             "All",
           ),
           Text(
@@ -113,7 +113,7 @@ class GlobalDataPage extends StatelessWidget {
         child: Container(
           height: 125,
           width: double.infinity,
-          margin: EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7.5),
             color: Colors.black

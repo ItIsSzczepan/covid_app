@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 class CountryTile extends StatelessWidget {
   final Country country;
-  final Function onIconPress;
-  final bool inFavorites;
+  final Widget buttonWidget;
 
   const CountryTile(
       {Key? key,
       required this.country,
-      required this.onIconPress,
-      required this.inFavorites})
+      required this.buttonWidget})
       : super(key: key);
 
   @override
@@ -37,14 +35,7 @@ class CountryTile extends StatelessWidget {
           ),
         ],
       ),
-      trailing: IconButton(
-          icon: Icon(
-            inFavorites ? Icons.favorite : Icons.favorite_outline,
-            color: inFavorites ? Colors.red : Colors.grey,
-          ),
-          onPressed: () {
-            onIconPress();
-          }),
+      trailing: buttonWidget,
     );
   }
 }

@@ -19,6 +19,7 @@ CountryModel _$CountryModelFromJson(Map<String, dynamic> json) => CountryModel(
       id: CountryModel.readCountryInfo(json, '_id') as int?,
     );
 
+// ignore: unused_element
 Map<String, dynamic> _$CountryModelToJson(CountryModel instance) =>
     <String, dynamic>{
       'cases': instance.cases,
