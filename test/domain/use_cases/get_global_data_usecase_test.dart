@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../models.dart';
 import 'get_global_data_usecase_test.mocks.dart';
 
 @GenerateMocks([CovidRepository])
@@ -19,15 +20,9 @@ void main() {
     useCase = GetGlobalDataUseCase(fakeCovidRepository);
   });
 
-  Record exampleRecord = const Record(
-      cases: 3,
-      todayCases: 10,
-      todayDeaths: 1,
-      deaths: 2,
-      todayRecovered: 2,
-      recovered: 3);
+  Record exampleRecord = TestModels().exampleRecord;
 
-  final Failure exampleFailure = Failure("message");
+  final Failure exampleFailure = TestModels().exampleFailure;
 
   test("should get countries data list", () async {
     when(fakeCovidRepository.getGlobal())

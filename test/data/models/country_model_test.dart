@@ -3,49 +3,18 @@ import 'dart:convert';
 import 'package:covid_app/src/data/models/country_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-const String testJson = '''{
-    "updated": 1641847925864,
-"country": "Afghanistan",
-"countryInfo": {
-"_id": 4,
-"iso2": "AF",
-"iso3": "AFG",
-"lat": 33,
-"long": 65,
-"flag": "https://disease.sh/assets/img/flags/af.png"
-},
-"cases": 158394,
-"todayCases": 13,
-"deaths": 7373,
-"todayDeaths": 0,
-"recovered": 145814,
-"todayRecovered": 20,
-"active": 5207,
-"critical": 1124,
-"casesPerOneMillion": 3934,
-"deathsPerOneMillion": 183,
-"tests": 830076,
-"testsPerOneMillion": 20618,
-"population": 40260483,
-"continent": "Asia",
-"oneCasePerPeople": 254,
-"oneDeathPerPeople": 5461,
-"oneTestPerPeople": 49,
-"activePerOneMillion": 129.33,
-"recoveredPerOneMillion": 3621.76,
-"criticalPerOneMillion": 27.92
-}''';
+import '../../models.dart';
 
 void main() {
   late Map<String, dynamic> json;
   late CountryModel model;
 
-  setUp((){
-    json = jsonDecode(testJson);
+  setUp(() {
+    json = jsonDecode(TestModels().testJson);
     model = CountryModel.fromJson(json);
   });
 
-  test("Check if fromJson return object of RecordModel class", (){
+  test("Check if fromJson return object of RecordModel class", () {
     expect(model, isInstanceOf<CountryModel>());
   });
 

@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../models.dart';
 import 'get_favorites_countries_usecase_test.mocks.dart';
 
 @GenerateMocks([CovidRepository])
@@ -19,30 +20,9 @@ void main() {
     useCase = GetFavoritesCountriesUseCase(fakeCovidRepository);
   });
 
-  final List<Country> exampleList = [
-    const Country(
-        country: "Poland",
-        countryCode: "PL",
-        flag: "poland",
-            cases: 3,
-            todayCases: 10,
-            todayDeaths: 1,
-            deaths: 2,
-            todayRecovered: 2,
-            recovered: 3),
-    const Country(
-        country: "Germany",
-        countryCode: "DE",
-        flag: "germany",
-            cases: 30,
-            todayCases: 100,
-            todayDeaths: 10,
-            deaths: 20,
-            todayRecovered: 20,
-            recovered: 30)
-  ];
+  final List<Country> exampleList = TestModels().exampleList;
 
-  final Failure exampleFailure = Failure("message");
+  final Failure exampleFailure = TestModels().exampleFailure;
 
   test("should get countries data list", () async {
     when(fakeCovidRepository.getAllFavoritesCountries())

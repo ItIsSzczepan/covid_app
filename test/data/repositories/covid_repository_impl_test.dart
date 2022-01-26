@@ -4,9 +4,7 @@ import 'package:covid_app/src/data/data_sources/local/app_database.dart';
 import 'package:covid_app/src/data/data_sources/local/country_dao.dart';
 import 'package:covid_app/src/data/data_sources/remote/covid_api_service.dart';
 import 'package:covid_app/src/data/models/country_model.dart';
-import 'package:covid_app/src/data/models/record_model.dart';
 import 'package:covid_app/src/data/repositories/covid_repository_impl.dart';
-import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -14,6 +12,7 @@ import 'package:mockito/mockito.dart';
 import 'package:retrofit/dio.dart';
 import 'package:dio/dio.dart';
 
+import '../../models.dart';
 import 'covid_repository_impl_test.mocks.dart';
 
 @GenerateMocks([CovidApiService, AppDatabase, CountryDao])
@@ -31,57 +30,7 @@ void main() {
         CovidRepositoryImpl(mockCovidApiService, mockAppDatabase);
   });
 
-  List<CountryModel> exampleList = [
-    const CountryModel(
-        country: "Global",
-        countryCode: "GL",
-        flag: "global",
-        cases: 100,
-        todayCases: 5000,
-        todayDeaths: 23,
-        deaths: 67,
-        todayRecovered: 2,
-        recovered: 32),
-    const CountryModel(
-        country: "Poland",
-        countryCode: "PL",
-        flag: "poland",
-        cases: 10,
-        todayCases: 200,
-        todayDeaths: 40,
-        deaths: 70,
-        todayRecovered: 0,
-        recovered: 3),
-    const CountryModel(
-        country: "Germany",
-        countryCode: "DE",
-        flag: "germany",
-        cases: 100,
-        todayCases: 3000,
-        todayDeaths: 27,
-        deaths: 90,
-        todayRecovered: 12,
-        recovered: 20),
-  ];
-
-  Country testCountry = const CountryModel(
-      country: "Germany",
-      countryCode: "DE",
-      flag: "germany",
-      cases: 100,
-      todayCases: 3000,
-      todayDeaths: 27,
-      deaths: 90,
-      todayRecovered: 12,
-      recovered: 20);
-
-  RecordModel exampleRecord = const RecordModel(
-      cases: 100,
-      todayCases: 5000,
-      todayDeaths: 23,
-      deaths: 67,
-      todayRecovered: 2,
-      recovered: 32);
+  List<CountryModel> exampleList = TestModels().exampleModelList;
 
   test("test getAllCountriesList", () async {
     when(mockCovidApiService.getAllCountriesList()).thenAnswer((_) async =>
@@ -100,13 +49,13 @@ void main() {
 
   test("test getGlobal", () async {
     when(mockCovidApiService.getGlobal()).thenAnswer((_) async => HttpResponse(
-        exampleRecord,
+        TestModels().exampleRecordModel,
         Response(
             requestOptions:
                 RequestOptions(path: "https://disease.sh/v3/covid-19/all"))));
     final result = await covidRepositoryImpl.getGlobal();
 
-    expect(result, Right(exampleRecord));
+    expect(result, Right(TestModels().exampleRecordModel));
 
     verify(mockCovidApiService.getGlobal());
     verifyNoMoreInteractions(mockCovidApiService);
@@ -133,15 +82,17 @@ void main() {
 
   test("test addCountryToFavorites", () async {
     when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
-    when(mockCountryDao.insertCountry(testCountry)).thenAnswer((value) async {
+    when(mockCountryDao.insertCountry(TestModels().exampleCountry))
+        .thenAnswer((value) async {
       exampleList.add(value.positionalArguments.first);
     });
 
-    final result = await covidRepositoryImpl.addCountryToFavorites(testCountry);
+    final result = await covidRepositoryImpl
+        .addCountryToFavorites(TestModels().exampleCountry);
 
     expect(result, const Right(null));
 
-    verify(mockCountryDao.insertCountry(testCountry));
+    verify(mockCountryDao.insertCountry(TestModels().exampleCountry));
     verify(mockAppDatabase.countryDao);
 
     verifyNoMoreInteractions(mockCountryDao);
@@ -161,17 +112,17 @@ void main() {
     when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
     when(mockCountryDao.findALlCountries())
         .thenAnswer((_) async => exampleList);
-    when(mockCountryDao.deleteCountry(testCountry))
+    when(mockCountryDao.deleteCountry(TestModels().exampleCountry))
         .thenAnswer((realInvocation) async {
       exampleList.remove(realInvocation.positionalArguments.first);
     });
 
-    final result =
-        await covidRepositoryImpl.removeCountryFromFavorites(testCountry);
+    final result = await covidRepositoryImpl
+        .removeCountryFromFavorites(TestModels().exampleCountry);
 
     expect(result, const Right(null));
 
-    verify(mockCountryDao.deleteCountry(testCountry));
+    verify(mockCountryDao.deleteCountry(TestModels().exampleCountry));
     verify(mockAppDatabase.countryDao);
 
     verifyNoMoreInteractions(mockCountryDao);

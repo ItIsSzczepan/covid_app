@@ -10,11 +10,11 @@ import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../models.dart';
 import 'favorites_countries_cubit_test.mocks.dart';
 
 class FakeError {
-  onError(Failure failure) {
-  }
+  onError(Failure failure) {}
 }
 
 @GenerateMocks([
@@ -24,101 +24,79 @@ class FakeError {
   FakeError
 ])
 void main() {
-    late final GetFavoritesCountriesUseCase _getFavoritesCountriesUseCase;
-    late final AddCountryToFavoritesUseCase _addCountryToFavoritesUseCase;
-    late final RemoveCountryFromFavoritesUseCase
-    _removeCountryFromFavoritesUseCase;
-    late final FavoritesCountriesCubit _favoritesCountriesCubit;
-    late Stream<List<Country>> _stream;
-    late final FakeError _fakeError;
+  late final GetFavoritesCountriesUseCase _getFavoritesCountriesUseCase;
+  late final AddCountryToFavoritesUseCase _addCountryToFavoritesUseCase;
+  late final RemoveCountryFromFavoritesUseCase
+      _removeCountryFromFavoritesUseCase;
+  late final FavoritesCountriesCubit _favoritesCountriesCubit;
+  late Stream<List<Country>> _stream;
+  late final FakeError _fakeError;
 
-    final List<Country> exampleList = [
-      const Country(
-          country: "Poland",
-          countryCode: "PL",
-          flag: "poland",
-          cases: 3,
-          todayCases: 10,
-          todayDeaths: 1,
-          deaths: 2,
-          todayRecovered: 2,
-          recovered: 3),
-      const Country(
-          country: "Germany",
-          countryCode: "DE",
-          flag: "germany",
-          cases: 30,
-          todayCases: 100,
-          todayDeaths: 10,
-          deaths: 20,
-          todayRecovered: 20,
-          recovered: 30)
-    ];
+  final List<Country> exampleList = TestModels().exampleList;
 
-    final Failure exampleFailure = Failure("message");
+  final Failure exampleFailure = TestModels().exampleFailure;
 
-    flutter_test.setUpAll(() {
-      _stream = Stream<List<Country>>.value(exampleList);
+  flutter_test.setUpAll(() {
+    _stream = Stream<List<Country>>.value(exampleList);
 
-      // mock UseCases
-      _getFavoritesCountriesUseCase = MockGetFavoritesCountriesUseCase();
-      _addCountryToFavoritesUseCase = MockAddCountryToFavoritesUseCase();
-      _removeCountryFromFavoritesUseCase =
-          MockRemoveCountryFromFavoritesUseCase();
-      _fakeError = MockFakeError();
+    // mock UseCases
+    _getFavoritesCountriesUseCase = MockGetFavoritesCountriesUseCase();
+    _addCountryToFavoritesUseCase = MockAddCountryToFavoritesUseCase();
+    _removeCountryFromFavoritesUseCase =
+        MockRemoveCountryFromFavoritesUseCase();
+    _fakeError = MockFakeError();
 
+    when(_fakeError.onError(exampleFailure)).thenReturn(null);
+    when(_getFavoritesCountriesUseCase())
+        .thenAnswer((realInvocation) async => Right(_stream));
 
-      when(_fakeError.onError(exampleFailure)).thenReturn(null);
-      when(_getFavoritesCountriesUseCase())
-          .thenAnswer((realInvocation) async => Right(_stream));
+    _favoritesCountriesCubit = FavoritesCountriesCubit(
+        _getFavoritesCountriesUseCase,
+        _addCountryToFavoritesUseCase,
+        _removeCountryFromFavoritesUseCase);
+  });
 
-      _favoritesCountriesCubit = FavoritesCountriesCubit(
-          _getFavoritesCountriesUseCase,
-          _addCountryToFavoritesUseCase,
-          _removeCountryFromFavoritesUseCase);
-    });
+  blocTest("cubit return Stream at init",
+      build: () {
+        when(_getFavoritesCountriesUseCase())
+            .thenAnswer((realInvocation) async => Right(_stream));
+        return FavoritesCountriesCubit(_getFavoritesCountriesUseCase,
+            _addCountryToFavoritesUseCase, _removeCountryFromFavoritesUseCase);
+      },
+      expect: () => [_stream],
+      verify: (cubit) {
+        verify(_getFavoritesCountriesUseCase());
+        verifyNoMoreInteractions(_getFavoritesCountriesUseCase);
+      });
 
-    blocTest("cubit return Stream at init",
-        build: () {
-          when(_getFavoritesCountriesUseCase())
-              .thenAnswer((realInvocation) async => Right(_stream));
-          return FavoritesCountriesCubit(_getFavoritesCountriesUseCase,
-              _addCountryToFavoritesUseCase, _removeCountryFromFavoritesUseCase);
-        },
-        expect: () => [_stream],
-        verify: (cubit) {
-          verify(_getFavoritesCountriesUseCase());
-          verifyNoMoreInteractions(_getFavoritesCountriesUseCase);
-        });
+  blocTest<FavoritesCountriesCubit, Stream>("add function should return error",
+      setUp: () {
+        when(_addCountryToFavoritesUseCase(params: exampleList[0]))
+            .thenAnswer((realInvocation) async => Left(exampleFailure));
+      },
+      build: () {
+        return _favoritesCountriesCubit;
+      },
+      act: (cubit) =>
+          cubit.addCountryToFavorites(exampleList[0], _fakeError.onError),
+      expect: () => [],
+      verify: (cubit) {
+        verify(_addCountryToFavoritesUseCase(params: exampleList[0]));
+        verify(_fakeError.onError(exampleFailure));
+      });
 
-    blocTest<FavoritesCountriesCubit, Stream>("add function should return error",
-        setUp: () {
-          when(_addCountryToFavoritesUseCase(params: exampleList[0]))
-              .thenAnswer((realInvocation) async => Left(exampleFailure));
-        },
-        build: () {
-          return _favoritesCountriesCubit;
-        },
-        act: (cubit) =>
-            cubit.addCountryToFavorites(exampleList[0], _fakeError.onError),
-        expect: () => [],
-        verify: (cubit) {
-          verify(_addCountryToFavoritesUseCase(params: exampleList[0]));
-          verify(_fakeError.onError(exampleFailure));
-        });
-
-    blocTest<FavoritesCountriesCubit, Stream>(
-        "remove function should return error",
-        setUp: () {
-          when(_removeCountryFromFavoritesUseCase(params: exampleList[0]))
-              .thenAnswer((realInvocation) async => Left(exampleFailure));
-        },
-        build: () => _favoritesCountriesCubit,
-        act: (cubit) =>
-            cubit.removeCountryFromFavorites(exampleList[0], _fakeError.onError),
-        expect: () => [],
-        verify: (cubit) {
-          verify(_removeCountryFromFavoritesUseCase(params: exampleList[0]));
-          verify(_fakeError.onError(exampleFailure));
-        });
+  blocTest<FavoritesCountriesCubit, Stream>(
+      "remove function should return error",
+      setUp: () {
+        when(_removeCountryFromFavoritesUseCase(params: exampleList[0]))
+            .thenAnswer((realInvocation) async => Left(exampleFailure));
+      },
+      build: () => _favoritesCountriesCubit,
+      act: (cubit) =>
+          cubit.removeCountryFromFavorites(exampleList[0], _fakeError.onError),
+      expect: () => [],
+      verify: (cubit) {
+        verify(_removeCountryFromFavoritesUseCase(params: exampleList[0]));
+        verify(_fakeError.onError(exampleFailure));
+      });
 }
