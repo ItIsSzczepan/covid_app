@@ -81,6 +81,20 @@ void main() {
       expect(findCountryTiles, findsNWidgets(TestModels().exampleList.length));
     });
 
+    testWidgets("widget data list should scroll", (WidgetTester tester) async {
+      _streamController.add(TestModels().exampleListLong);
+      await tester.pumpWidget(testPage);
+      await tester.pump(const Duration(milliseconds: 200));
+
+      final findScrollable = find.byType(Scrollable);
+      final findLastItem = find.text(TestModels().exampleListLong.last.country);
+
+      await tester.scrollUntilVisible(findLastItem, 500.0,
+          scrollable: findScrollable);
+
+      expect(findLastItem, findsOneWidget);
+    });
+
     testWidgets("widget should display CountryTile with data",
         (WidgetTester tester) async {
       await tester.pumpWidget(testPage);
