@@ -1,28 +1,29 @@
 import 'package:equatable/equatable.dart';
 
 class Record extends Equatable {
-  final int newConfirmed;
-  final int totalConfirmed;
-  final int newDeaths;
-  final int totalDeaths;
-  final int newRecovered;
-  final int totalRecovered;
+  final int cases;
+  final int todayCases;
+  final int todayDeaths;
+  final int deaths;
+  final int todayRecovered;
+  final int recovered;
 
   const Record(
-      {required this.newConfirmed,
-      required this.totalConfirmed,
-      required this.newDeaths,
-      required this.totalDeaths,
-      required this.newRecovered,
-      required this.totalRecovered});
+      {required this.cases,
+      required this.todayCases,
+      required this.todayDeaths,
+      required this.deaths,
+      required this.todayRecovered,
+      required this.recovered});
 
   @override
   List<Object?> get props => [
-        newConfirmed,
-        totalConfirmed,
-        newDeaths,
-        totalDeaths,
-        newRecovered,
-        totalRecovered
+        cases,
+        todayCases,
+        todayDeaths,
+        deaths,
+        todayRecovered,
+        recovered
       ];
+
 }

@@ -4,14 +4,14 @@ import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:covid_app/src/domain/repositories/covid_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class GetSummaryUseCase implements UseCase<List<Country>, void>{
+class AddCountryToFavoritesUseCase implements UseCase<void, Country>{
   final CovidRepository _covidRepository;
 
-  GetSummaryUseCase(this._covidRepository);
+  AddCountryToFavoritesUseCase(this._covidRepository);
 
   @override
-  Future<Either<Failure, List<Country>>> call({void params}){
-    return _covidRepository.getSummary();
+  Future<Either<Failure, void>> call({required Country params}) {
+    return _covidRepository.addCountryToFavorites(params);
   }
-  
+
 }
