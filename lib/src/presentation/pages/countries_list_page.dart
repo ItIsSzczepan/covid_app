@@ -1,4 +1,5 @@
 import 'package:covid_app/src/domain/entities/country.dart';
+import 'package:covid_app/src/injector.dart';
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/widgets/country_tile.dart';
@@ -13,6 +14,7 @@ class CountriesListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CountriesListCubit cubit = BlocProvider.of<CountriesListCubit>(context);
+    FavoritesCountriesCubit favoritesCountriesCubit = injector();
 
     return Scaffold(
       key: const Key("Country list Scaffold"),
@@ -21,6 +23,7 @@ class CountriesListPage extends StatelessWidget {
       ),
       body: SafeArea(
           child: BlocBuilder<FavoritesCountriesCubit, Stream<List<Country>>>(
+            bloc: favoritesCountriesCubit,
         builder: (context, favoritesStream) {
           return StreamBuilder<List<Country>>(
               stream: favoritesStream,

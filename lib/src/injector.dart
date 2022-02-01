@@ -18,7 +18,7 @@ import 'domain/repositories/covid_repository.dart';
 final injector = GetIt.instance;
 
 initializeDependencies()async{
-  final database = await $FloorAppDatabase.databaseBuilder(kDatabaseName).addMigrations([migration2to3]).build();
+  final database = await $FloorAppDatabase.databaseBuilder(kDatabaseName).addMigrations([migration1to2, migration2to3]).build();
 
   injector.registerSingleton<AppDatabase>(database);
   injector.registerSingleton<Dio>(Dio());

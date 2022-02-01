@@ -31,9 +31,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<GlobalDataCubit>(
           create: (context) => injector()..load(),
         ),
-        BlocProvider<FavoritesCountriesCubit>(
-          create: (context) => injector(),
-        ),
       ],
       child: MaterialApp.router(
         routerDelegate: _appRouter.delegate(),

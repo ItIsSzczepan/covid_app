@@ -1,4 +1,5 @@
 import 'package:covid_app/src/domain/entities/country.dart';
+import 'package:covid_app/src/injector.dart';
 import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/widgets/country_tile.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,7 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FavoritesCountriesCubit cubit =
-        BlocProvider.of<FavoritesCountriesCubit>(context);
+    FavoritesCountriesCubit cubit = injector();
 
     return Scaffold(
       key: const Key("Favorites Scaffold"),
