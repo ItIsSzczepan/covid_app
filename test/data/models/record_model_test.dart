@@ -47,4 +47,15 @@ void main() {
     expect(model.todayRecovered, 20);
     expect(model.todayRecovered, isA<int>());
   });
+
+  test("method fromJson should return update", () {
+    expect(model.updated, 1641847925864);
+    expect(model.updated, isA<int>());
+  });
+
+  test("check updatedTime getter", () {
+    expect(model.updatedTime, DateTime.fromMillisecondsSinceEpoch((1641847925864 * 1000).toInt()));
+    expect(model.updatedTime, isA<DateTime>());
+  });
+
 }
