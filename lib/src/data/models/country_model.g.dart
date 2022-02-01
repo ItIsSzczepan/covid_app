@@ -10,6 +10,7 @@ CountryModel _$CountryModelFromJson(Map<String, dynamic> json) => CountryModel(
       country: json['country'] as String,
       countryCode: CountryModel.readCountryInfo(json, 'iso2') as String? ?? '',
       flag: CountryModel.readCountryInfo(json, 'flag') as String? ?? '',
+      updated: json['updated'] as int,
       todayCases: json['todayCases'] as int,
       cases: json['cases'] as int,
       todayDeaths: json['todayDeaths'] as int,
@@ -19,9 +20,9 @@ CountryModel _$CountryModelFromJson(Map<String, dynamic> json) => CountryModel(
       id: CountryModel.readCountryInfo(json, '_id') as int?,
     );
 
-// ignore: unused_element
 Map<String, dynamic> _$CountryModelToJson(CountryModel instance) =>
     <String, dynamic>{
+      'updated': instance.updated,
       'cases': instance.cases,
       'todayCases': instance.todayCases,
       'todayDeaths': instance.todayDeaths,

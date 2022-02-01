@@ -20,6 +20,7 @@ void main() {
   late Widget testPage;
 
   const RecordModel testRecord = RecordModel(
+    updated: 12341234,
       todayCases: 2000,
       cases: 4000,
       todayDeaths: 50,
