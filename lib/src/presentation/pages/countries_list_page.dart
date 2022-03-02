@@ -14,7 +14,7 @@ class CountriesListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CountriesListCubit cubit = BlocProvider.of<CountriesListCubit>(context);
-    FavoritesCountriesCubit favoritesCountriesCubit = injector();
+    FavoritesCountriesCubit favoritesCountriesCubit = BlocProvider.of<FavoritesCountriesCubit>(context);
 
     return Scaffold(
       key: const Key("Country list Scaffold"),

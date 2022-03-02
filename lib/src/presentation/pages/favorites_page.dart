@@ -10,7 +10,7 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FavoritesCountriesCubit cubit = injector();
+    FavoritesCountriesCubit cubit = BlocProvider.of<FavoritesCountriesCubit>(context);
 
     return Scaffold(
       key: const Key("Favorites Scaffold"),
