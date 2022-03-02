@@ -16,44 +16,50 @@ class GlobalDataPage extends StatelessWidget {
         title: const Text("Global"),
       ),
       body: SafeArea(
-        child: BlocBuilder<GlobalDataCubit, GlobalDataState>(
-          bloc: cubit,
-          builder: (context, state) {
-            if (state is GlobalDataLoading) {
-              return _buildPlaceholders();
-            }
+        child: RefreshIndicator(
+          onRefresh: () => cubit.load(),
+          child: BlocBuilder<GlobalDataCubit, GlobalDataState>(
+            bloc: cubit,
+            builder: (context, state) {
+              if (state is GlobalDataLoading) {
+                return _buildPlaceholders();
+              }
 
-            if (state is GlobalDataError) {
-              return _buildError(state.message);
-            }
+              if (state is GlobalDataError) {
+                return _buildError(state.message);
+              }
 
-            if (state is GlobalDataDone) {
-              return _buildData(context, state.data);
-            }
+              if (state is GlobalDataDone) {
+                return _buildData(context, state.data);
+              }
 
-            return const Text("");
-          },
+              return const Text("");
+            },
+          ),
         ),
       ),
     );
   }
 
   Widget _buildData(BuildContext context, Record record) {
-    return Column(
-      children: [
-        _buildDataContainer(
-            context, "Cases", record.todayCases, record.cases, Colors.grey),
-        Row(children: [
-          Flexible(
-              flex: 1,
-              child: _buildDataContainer(context, "Deaths", record.todayDeaths,
-                  record.deaths, Colors.red)),
-          Flexible(
-              flex: 1,
-              child: _buildDataContainer(context, "Recovered",
-                  record.todayRecovered, record.recovered, Colors.green))
-        ])
-      ],
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          _buildDataContainer(
+              context, "Cases", record.todayCases, record.cases, Colors.grey),
+          Row(children: [
+            Flexible(
+                flex: 1,
+                child: _buildDataContainer(context, "Deaths", record.todayDeaths,
+                    record.deaths, Colors.red)),
+            Flexible(
+                flex: 1,
+                child: _buildDataContainer(context, "Recovered",
+                    record.todayRecovered, record.recovered, Colors.green))
+          ])
+        ],
+      ),
     );
   }
 
@@ -124,10 +130,16 @@ class GlobalDataPage extends StatelessWidget {
   }
 
   Widget _buildError(String message) {
-    return Center(
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.red),
+    return Container(
+      constraints: BoxConstraints.expand(),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Center(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
       ),
     );
   }

@@ -129,6 +129,32 @@ void main() {
       }
     });
 
+    testWidgets("widget should reload data after pull", (WidgetTester tester) async {
+      final SemanticsHandle handle = tester.ensureSemantics();
+
+      await _buildWidget(tester);
+
+      await tester.fling(find.byType(CountryTile).first, const Offset(0.0, 300.0), 1000.0);
+      await tester.pump();
+
+      expect(
+          tester.getSemantics(find.byType(RefreshProgressIndicator)),
+          matchesSemantics(
+            label: 'Refresh',
+          ));
+
+      await tester
+          .pump(const Duration(seconds: 1)); // finish the scroll animation
+      await tester.pump(
+          const Duration(seconds: 1)); // finish the indicator settle animation
+      await tester.pump(
+          const Duration(seconds: 1)); // finish the indicator hide animation
+
+      verify(getAllCountriesListDataUseCase.call()).called(2);
+
+      handle.dispose();
+    });
+
     testWidgets(
         "widget should display change favorite icon in CountryTile after click on it",
         (WidgetTester tester) async {

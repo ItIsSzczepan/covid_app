@@ -58,6 +58,36 @@ void main() {
     expect(findShimmers, findsNWidgets(3));
   });
 
+  testWidgets("pull and refresh", (WidgetTester tester) async {
+    when(_usecase.call())
+        .thenAnswer((realInvocation) async => const Right(testRecord));
+
+    final SemanticsHandle handle = tester.ensureSemantics();
+
+    await tester.pumpWidget(testPage);
+    await tester.pump(const Duration(milliseconds: 100));
+
+    await tester.flingFrom(const Offset(200.0, 150.0), const Offset(0.0, 300.0), 1000.0);
+    await tester.pump();
+
+    expect(
+        tester.getSemantics(find.byType(RefreshProgressIndicator)),
+        matchesSemantics(
+          label: 'Refresh',
+        ));
+
+    await tester
+        .pump(const Duration(seconds: 1)); // finish the scroll animation
+    await tester.pump(
+        const Duration(seconds: 1)); // finish the indicator settle animation
+    await tester.pump(
+        const Duration(seconds: 1)); // finish the indicator hide animation
+
+    verify(_usecase.call()).called(2);
+
+    handle.dispose();
+  });
+
   testWidgets("data is displayed", (WidgetTester tester)async{
     when(_usecase.call())
         .thenAnswer((realInvocation) async => const Right(testRecord));

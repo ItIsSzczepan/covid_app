@@ -32,7 +32,7 @@ class CountriesListPage extends StatelessWidget {
                   builder: (BuildContext context, state) {
                     if (state is CountriesListDone) {
                       return _buildDashboard(
-                          context, state, favoritesCountries.data ?? []);
+                          context, state, favoritesCountries.data ?? [], cubit.load);
                     }
                     if (state is CountriesListLoading) {
                       return _buildPlaceholders();
@@ -53,33 +53,37 @@ class CountriesListPage extends StatelessWidget {
   }
 
   Widget _buildDashboard(
-      BuildContext context, CountriesListState state, List<Country> favorites) {
+      BuildContext context, CountriesListState state, List<Country> favorites, Function onRefresh) {
     final countries = (state as CountriesListDone).countries;
     final List<String> favCountriesNames =
         favorites.map((e) => e.country).toList();
 
-    return ListView.separated(
-        itemBuilder: (context, i) {
-          final Country country = countries[i];
-          bool inFavorites = favCountriesNames.contains(country.country);
+    return RefreshIndicator(
+      onRefresh: () => onRefresh(),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+          itemBuilder: (context, i) {
+            final Country country = countries[i];
+            bool inFavorites = favCountriesNames.contains(country.country);
 
-          return CountryTile(
-              country: country,
-              buttonWidget: IconButton(
-                  icon: Icon(
-                    inFavorites ? Icons.favorite : Icons.favorite_outline,
-                    color: inFavorites ? Colors.red : Colors.grey,
-                  ),
-                  onPressed: (){
-                    if (inFavorites) {
-                      _removeCountryFromFavorites(context, country);
-                    } else {
-                      _addCountryToFavorites(context, country);
-                    }
-                  }));
-        },
-        separatorBuilder: (_, i) => const Divider(),
-        itemCount: countries.length);
+            return CountryTile(
+                country: country,
+                buttonWidget: IconButton(
+                    icon: Icon(
+                      inFavorites ? Icons.favorite : Icons.favorite_outline,
+                      color: inFavorites ? Colors.red : Colors.grey,
+                    ),
+                    onPressed: (){
+                      if (inFavorites) {
+                        _removeCountryFromFavorites(context, country);
+                      } else {
+                        _addCountryToFavorites(context, country);
+                      }
+                    }));
+          },
+          separatorBuilder: (_, i) => const Divider(),
+          itemCount: countries.length),
+    );
   }
 
   _addCountryToFavorites(BuildContext context, Country country) {
