@@ -6,6 +6,7 @@ import 'package:covid_app/src/domain/entities/record.dart';
 import 'package:covid_app/src/domain/repositories/covid_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class CovidRepositoryImpl implements CovidRepository{
   final CovidApiService _covidApiService;
@@ -17,6 +18,7 @@ class CovidRepositoryImpl implements CovidRepository{
   Future<Either<Failure, List<Country>>> getAllCountriesListData() async{
     try{
       final httpResponse = await _covidApiService.getAllCountriesList();
+      _updatedCountriesInDatabase(httpResponse.data);
       return Right(httpResponse.data);
     }on DioError catch(e){
       return Left(Failure(e.message));
@@ -61,6 +63,19 @@ class CovidRepositoryImpl implements CovidRepository{
     }catch (e){
       return Left(Failure(e.toString()));
     }
+  }
+
+  _updatedCountriesInDatabase(List<Country> downloadedCountries) async {
+    var countriesInDB = await _appDatabase.countryDao.findALlCountries();
+    if(countriesInDB.isEmpty) return null;
+
+    downloadedCountries.forEach((downloadedCountry) {
+      countriesInDB.forEach((inDBCountry) {
+        if(downloadedCountry.country == inDBCountry.country){
+          _appDatabase.countryDao.updateCountry(downloadedCountry);
+        }
+      });
+    });
   }
 
 }
