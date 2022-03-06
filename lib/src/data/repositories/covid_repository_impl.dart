@@ -69,13 +69,13 @@ class CovidRepositoryImpl implements CovidRepository{
     var countriesInDB = await _appDatabase.countryDao.findALlCountries();
     if(countriesInDB.isEmpty) return null;
 
-    downloadedCountries.forEach((downloadedCountry) {
-      countriesInDB.forEach((inDBCountry) {
+    for (var downloadedCountry in downloadedCountries) {
+      for (var inDBCountry in countriesInDB) {
         if(downloadedCountry.country == inDBCountry.country){
           _appDatabase.countryDao.updateCountry(downloadedCountry);
         }
-      });
-    });
+      }
+    }
   }
 
 }
