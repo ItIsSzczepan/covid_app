@@ -16,6 +16,8 @@ import 'package:flutter_placeholder_textlines/flutter_placeholder_textlines.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 import '../../models.dart';
 import 'countries_list_page_test.mocks.dart';
@@ -72,6 +74,8 @@ void main() {
         addCountryToFavoritesUseCase, removeCountryFromFavoritesUseCase);
 
     testPage = MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: MultiBlocProvider(providers: [
         BlocProvider<CountriesListCubit>(create: (_) => apiCubit..load()),
         BlocProvider<FavoritesCountriesCubit>(create: (_) => favoritesCubit),
@@ -117,11 +121,11 @@ void main() {
         find.widgetWithText(
             CountryTile, TestModels().exampleList.first.country),
         find.widgetWithText(CountryTile,
-            "Cases\n${TestModels().exampleList.first.todayCases.toString()}\n${TestModels().exampleList.first.cases.toString()}"),
+            "${AppLocalizationsEn().cases}\n${TestModels().exampleList.first.todayCases.toString()}\n${TestModels().exampleList.first.cases.toString()}"),
         find.widgetWithText(CountryTile,
-            "Deaths\n${TestModels().exampleList.first.todayDeaths.toString()}\n${TestModels().exampleList.first.deaths.toString()}"),
+            "${AppLocalizationsEn().deaths}\n${TestModels().exampleList.first.todayDeaths.toString()}\n${TestModels().exampleList.first.deaths.toString()}"),
         find.widgetWithText(CountryTile,
-            "Recovered\n${TestModels().exampleList.first.todayRecovered.toString()}\n${TestModels().exampleList.first.recovered.toString()}"),
+            "${AppLocalizationsEn().recovered}\n${TestModels().exampleList.first.todayRecovered.toString()}\n${TestModels().exampleList.first.recovered.toString()}"),
       ];
 
       for (var value in countryTileDataFinders) {
@@ -130,6 +134,7 @@ void main() {
     });
 
     testWidgets("widget should reload data after pull", (WidgetTester tester) async {
+      reset(getAllCountriesListDataUseCase);
       final SemanticsHandle handle = tester.ensureSemantics();
 
       await _buildWidget(tester);
@@ -286,10 +291,8 @@ void main() {
 
       final findError =
           find.textContaining(TestModels().exampleFailure.message);
-      final findCenter = find.byType(Center);
 
       expect(findError, findsOneWidget);
-      expect(findCenter, findsOneWidget);
     });
   });
 

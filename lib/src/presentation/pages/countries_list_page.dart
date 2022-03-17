@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_placeholder_textlines/flutter_placeholder_textlines.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CountriesListPage extends StatefulWidget {
   const CountriesListPage({Key? key}) : super(key: key);
@@ -91,7 +92,7 @@ class _CountriesListPageState extends State<CountriesListPage> {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-        title: const Text('Countries'),
+        title: Text(AppLocalizations.of(context)!.countries),
         actions: [searchBar.getSearchAction(context)]);
   }
 

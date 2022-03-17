@@ -10,6 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 import 'global_data_page_test.mocks.dart';
 
@@ -37,6 +39,8 @@ void main() {
   setUp((){
     _cubit = GlobalDataCubit(_usecase);
     testPage = MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: BlocProvider<GlobalDataCubit>(
         create: (_) => _cubit..load(),
         child: const GlobalDataPage(),
@@ -59,6 +63,7 @@ void main() {
   });
 
   testWidgets("pull and refresh", (WidgetTester tester) async {
+    reset(_usecase);
     when(_usecase.call())
         .thenAnswer((realInvocation) async => const Right(testRecord));
 

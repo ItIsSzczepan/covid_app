@@ -1,0 +1,27 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Title of global page"
+  },
+  "countries": "Countries",
+  "@countries": {
+    "description": "Title of all countries page"
+  },
+  "favorites": "Favorites",
+  "@favorites": {
+    "description": "Title of favorites countries page"
+  },
+  "cases": "Cases",
+  "deaths": "Deaths",
+  "recovered": "Recovered",
+  "today": "Today",
+  "all": "All",
+  "emptyFav": "Your favorites list is empty",
+  "@emptyFav": {
+    "description": "Message show when favorites list is empty"
+  }
+}

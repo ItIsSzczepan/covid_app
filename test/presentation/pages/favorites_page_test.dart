@@ -4,6 +4,7 @@ import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:covid_app/src/domain/use_cases/add_country_to_favorites_usecase.dart';
 import 'package:covid_app/src/domain/use_cases/get_favorites_countries_usecase.dart';
 import 'package:covid_app/src/domain/use_cases/remove_country_from_favorites_usecase.dart';
+import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/pages/favorites_page.dart';
 import 'package:covid_app/src/presentation/widgets/country_tile.dart';
@@ -13,20 +14,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 import '../../models.dart';
-import '../cubit/favorites_countries_cubit_test.mocks.dart';
+import 'favorites_page_test.mocks.dart';
 
 @GenerateMocks([
   GetFavoritesCountriesUseCase,
   AddCountryToFavoritesUseCase,
-  RemoveCountryFromFavoritesUseCase
+  RemoveCountryFromFavoritesUseCase,
+  CountriesListCubit
 ])
 void main() {
   late final GetFavoritesCountriesUseCase getFavoritesCountriesUseCase;
   late final AddCountryToFavoritesUseCase addCountryToFavoritesUseCase;
   late final RemoveCountryFromFavoritesUseCase
       removeCountryFromFavoritesUseCase;
+  late final CountriesListCubit countriesListCubit;
   late FavoritesCountriesCubit cubit;
   late Widget testPage;
   late StreamController<List<Country>> _streamController;
@@ -35,12 +40,15 @@ void main() {
     getFavoritesCountriesUseCase = MockGetFavoritesCountriesUseCase();
     addCountryToFavoritesUseCase = MockAddCountryToFavoritesUseCase();
     removeCountryFromFavoritesUseCase = MockRemoveCountryFromFavoritesUseCase();
+    countriesListCubit = MockCountriesListCubit();
   });
 
   setUp(() {
     List<Country> testList = TestModels().exampleList;
     _streamController = StreamController<List<Country>>()..add(testList);
     Stream<List<Country>> _stream = _streamController.stream;
+
+    when(countriesListCubit.stream).thenAnswer((_)=> Stream.empty());
 
     when(getFavoritesCountriesUseCase.call())
         .thenAnswer((realInvocation) async => Right(_stream));
@@ -63,8 +71,17 @@ void main() {
         addCountryToFavoritesUseCase, removeCountryFromFavoritesUseCase);
 
     testPage = MaterialApp(
-      home: BlocProvider<FavoritesCountriesCubit>(
-        create: (_) => cubit,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<FavoritesCountriesCubit>(
+            create: (_) => cubit,
+          ),
+          BlocProvider<CountriesListCubit>(
+            create: (_) => countriesListCubit,
+          )
+        ],
         child: const FavoritesPage(),
       ),
     );
@@ -181,7 +198,7 @@ void main() {
 
       expect(findCountryTiles, findsNothing);
 
-      final findEmptyText = find.textContaining("empty");
+      final findEmptyText = find.textContaining(AppLocalizationsEn().emptyFav);
       expect(findEmptyText, findsOneWidget);
     });
 
@@ -208,7 +225,8 @@ void main() {
       expect(findRemovedCountryName, findsNothing);
       expect(findRemovedCountryName2, findsNothing);
 
-      final findEmptyMessage = find.textContaining("empty");
+      final findEmptyMessage =
+          find.textContaining(AppLocalizationsEn().emptyFav);
       expect(findEmptyMessage, findsOneWidget);
     });
   });
@@ -218,7 +236,8 @@ void main() {
       await tester.pumpWidget(testPage);
 
       final findAppBar = find.byType(AppBar);
-      final findAppBarTitle = find.widgetWithText(AppBar, "Favorites");
+      final findAppBarTitle =
+          find.widgetWithText(AppBar, AppLocalizationsEn().favorites);
 
       expect(findAppBar, findsOneWidget);
       expect(findAppBarTitle, findsOneWidget);

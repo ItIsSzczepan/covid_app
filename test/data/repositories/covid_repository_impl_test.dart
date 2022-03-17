@@ -33,6 +33,9 @@ void main() {
   List<CountryModel> exampleList = TestModels().exampleModelList;
 
   test("test getAllCountriesList", () async {
+    when(mockAppDatabase.countryDao).thenReturn(mockCountryDao);
+    when(mockCountryDao.findALlCountries())
+        .thenAnswer((_) async => exampleList);
     when(mockCovidApiService.getAllCountriesList()).thenAnswer((_) async =>
         HttpResponse(
             exampleList,

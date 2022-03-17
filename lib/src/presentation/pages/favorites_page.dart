@@ -1,10 +1,10 @@
 import 'package:covid_app/src/domain/entities/country.dart';
-import 'package:covid_app/src/injector.dart';
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/widgets/country_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class FavoritesPage extends StatelessWidget {
     return Scaffold(
       key: const Key("Favorites Scaffold"),
       appBar: AppBar(
-        title: const Text("Favorites"),
+        title: Text(AppLocalizations.of(context)!.favorites),
       ),
       body: BlocBuilder<FavoritesCountriesCubit, Stream<List<Country>>>(
           bloc: cubit,
@@ -39,7 +39,7 @@ class FavoritesPage extends StatelessWidget {
   }
 
   Widget _buildEmptyMessage(BuildContext context) {
-    return const Center(child: Text("Your favorites list is empty"));
+    return Center(child: Text(AppLocalizations.of(context)!.emptyFav));
   }
 
   Widget _buildList(BuildContext context, List<Country> data) {

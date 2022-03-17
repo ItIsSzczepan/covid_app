@@ -2,17 +2,20 @@
 // in covid_app/test/presentation/pages/favorites_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:covid_app/src/core/failure.dart' as _i5;
-import 'package:covid_app/src/core/params.dart' as _i7;
-import 'package:covid_app/src/domain/entities/country.dart' as _i6;
+import 'package:bloc/bloc.dart' as _i11;
+import 'package:covid_app/src/core/failure.dart' as _i6;
+import 'package:covid_app/src/core/params.dart' as _i8;
+import 'package:covid_app/src/domain/entities/country.dart' as _i7;
 import 'package:covid_app/src/domain/use_cases/add_country_to_favorites_usecase.dart'
-    as _i8;
-import 'package:covid_app/src/domain/use_cases/get_favorites_countries_usecase.dart'
-    as _i3;
-import 'package:covid_app/src/domain/use_cases/remove_country_from_favorites_usecase.dart'
     as _i9;
+import 'package:covid_app/src/domain/use_cases/get_favorites_countries_usecase.dart'
+    as _i4;
+import 'package:covid_app/src/domain/use_cases/remove_country_from_favorites_usecase.dart'
+    as _i10;
+import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart'
+    as _i3;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -27,55 +30,102 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeEither_0<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
 
+class _FakeCountriesListState_1 extends _i1.Fake
+    implements _i3.CountriesListState {}
+
 /// A class which mocks [GetFavoritesCountriesUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetFavoritesCountriesUseCase extends _i1.Mock
-    implements _i3.GetFavoritesCountriesUseCase {
+    implements _i4.GetFavoritesCountriesUseCase {
   MockGetFavoritesCountriesUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i4.Stream<List<_i6.Country>>>> call(
-          {_i7.Params? params}) =>
+  _i5.Future<_i2.Either<_i6.Failure, _i5.Stream<List<_i7.Country>>>> call(
+          {_i8.Params? params}) =>
       (super.noSuchMethod(Invocation.method(#call, [], {#params: params}),
           returnValue: Future<
-                  _i2.Either<_i5.Failure, _i4.Stream<List<_i6.Country>>>>.value(
-              _FakeEither_0<_i5.Failure, _i4.Stream<List<_i6.Country>>>())) as _i4
-          .Future<_i2.Either<_i5.Failure, _i4.Stream<List<_i6.Country>>>>);
+                  _i2.Either<_i6.Failure, _i5.Stream<List<_i7.Country>>>>.value(
+              _FakeEither_0<_i6.Failure, _i5.Stream<List<_i7.Country>>>())) as _i5
+          .Future<_i2.Either<_i6.Failure, _i5.Stream<List<_i7.Country>>>>);
 }
 
 /// A class which mocks [AddCountryToFavoritesUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAddCountryToFavoritesUseCase extends _i1.Mock
-    implements _i8.AddCountryToFavoritesUseCase {
+    implements _i9.AddCountryToFavoritesUseCase {
   MockAddCountryToFavoritesUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> call({_i6.Country? params}) =>
+  _i5.Future<_i2.Either<_i6.Failure, void>> call({_i7.Country? params}) =>
       (super.noSuchMethod(Invocation.method(#call, [], {#params: params}),
-              returnValue: Future<_i2.Either<_i5.Failure, void>>.value(
-                  _FakeEither_0<_i5.Failure, void>()))
-          as _i4.Future<_i2.Either<_i5.Failure, void>>);
+              returnValue: Future<_i2.Either<_i6.Failure, void>>.value(
+                  _FakeEither_0<_i6.Failure, void>()))
+          as _i5.Future<_i2.Either<_i6.Failure, void>>);
 }
 
 /// A class which mocks [RemoveCountryFromFavoritesUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRemoveCountryFromFavoritesUseCase extends _i1.Mock
-    implements _i9.RemoveCountryFromFavoritesUseCase {
+    implements _i10.RemoveCountryFromFavoritesUseCase {
   MockRemoveCountryFromFavoritesUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> call({_i6.Country? params}) =>
+  _i5.Future<_i2.Either<_i6.Failure, void>> call({_i7.Country? params}) =>
       (super.noSuchMethod(Invocation.method(#call, [], {#params: params}),
-              returnValue: Future<_i2.Either<_i5.Failure, void>>.value(
-                  _FakeEither_0<_i5.Failure, void>()))
-          as _i4.Future<_i2.Either<_i5.Failure, void>>);
+              returnValue: Future<_i2.Either<_i6.Failure, void>>.value(
+                  _FakeEither_0<_i6.Failure, void>()))
+          as _i5.Future<_i2.Either<_i6.Failure, void>>);
+}
+
+/// A class which mocks [CountriesListCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCountriesListCubit extends _i1.Mock
+    implements _i3.CountriesListCubit {
+  MockCountriesListCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.CountriesListState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeCountriesListState_1()) as _i3.CountriesListState);
+  @override
+  _i5.Stream<_i3.CountriesListState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i3.CountriesListState>.empty())
+          as _i5.Stream<_i3.CountriesListState>);
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
+  @override
+  void emit(_i3.CountriesListState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onChange(_i11.Change<_i3.CountriesListState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  _i5.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
 }
