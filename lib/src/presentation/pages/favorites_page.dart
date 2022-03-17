@@ -1,5 +1,6 @@
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:covid_app/src/injector.dart';
+import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/widgets/country_tile.dart';
 import 'package:flutter/material.dart';
@@ -42,19 +43,24 @@ class FavoritesPage extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, List<Country> data) {
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          Country country = data[index];
+    CountriesListCubit allCountriesCubit = BlocProvider.of<CountriesListCubit>(context);
 
-          return CountryTile(
-              country: country,
-              buttonWidget: IconButton(
-                onPressed: () => _removeCountryFromFavorites(context, country),
-                icon: const Icon(Icons.delete_outlined),
-              ));
-        },
-        separatorBuilder: (_, i) => const Divider(),
-        itemCount: data.length);
+    return RefreshIndicator(
+      onRefresh: () => allCountriesCubit.load(),
+      child: ListView.separated(
+          itemBuilder: (context, index) {
+            Country country = data[index];
+
+            return CountryTile(
+                country: country,
+                buttonWidget: IconButton(
+                  onPressed: () => _removeCountryFromFavorites(context, country),
+                  icon: const Icon(Icons.delete_outlined),
+                ));
+          },
+          separatorBuilder: (_, i) => const Divider(),
+          itemCount: data.length),
+    );
   }
 
   _removeCountryFromFavorites(BuildContext context, Country country) {

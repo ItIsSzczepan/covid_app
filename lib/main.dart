@@ -1,6 +1,5 @@
 import 'package:covid_app/src/core/routes.gr.dart';
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
-import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/global_data_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

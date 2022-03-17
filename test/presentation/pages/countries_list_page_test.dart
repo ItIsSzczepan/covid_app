@@ -293,7 +293,7 @@ void main() {
     });
   });
 
-  group("app bar", () {
+  group("app bar and search", () {
     testWidgets("widget should contain app bar", (WidgetTester tester) async {
       await _buildWidget(tester);
 
@@ -301,5 +301,87 @@ void main() {
 
       expect(findAppBar, findsOneWidget);
     });
+
+    testWidgets("app bar contain search icon", (WidgetTester tester)async{
+      await _buildWidget(tester);
+
+      final findSearchIconInAppBar = find.widgetWithIcon(AppBar, Icons.search);
+
+      expect(findSearchIconInAppBar, findsOneWidget);
+    });
+
+    testWidgets("app should show text field widget after tap on search icon", (WidgetTester tester)async{
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+
+      expect(findTextField, findsOneWidget);
+    });
+
+    testWidgets("app should hide text field after tap on back arrow", (WidgetTester tester)async{
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+
+      expect(findTextField, findsOneWidget);
+
+      final findBackArrow = find.byIcon(Icons.arrow_back);
+      await tester.tap(findBackArrow);
+      await tester.pump();
+
+      expect(findTextField, findsNothing);
+    });
+
+    testWidgets("app should return countries right for search", (WidgetTester tester) async {
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+      await tester.enterText(findTextField, "pol");
+      await tester.pump(const Duration(seconds: 1));
+
+      final findGermany = find.text("Germany");
+      final findPoland = find.text("Poland");
+
+      expect(findGermany, findsNothing);
+      expect(findPoland, findsOneWidget);
+    });
+
+    testWidgets("app should return all countries after search bar are closed", (WidgetTester tester) async {
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+      await tester.enterText(findTextField, "pol");
+      await tester.pump();
+
+      final findGermany = find.text("Germany");
+      final findPoland = find.text("Poland");
+
+      expect(findGermany, findsNothing);
+      expect(findPoland, findsOneWidget);
+
+      final findBackArrow = find.byIcon(Icons.arrow_back);
+      await tester.tap(findBackArrow);
+      await tester.pump();
+
+      expect(findGermany, findsOneWidget);
+      expect(findPoland, findsOneWidget);
+    });
+
   });
 }

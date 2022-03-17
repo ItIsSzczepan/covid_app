@@ -6,7 +6,6 @@ import 'package:covid_app/src/domain/entities/record.dart';
 import 'package:covid_app/src/domain/repositories/covid_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class CovidRepositoryImpl implements CovidRepository{
   final CovidApiService _covidApiService;

@@ -15,9 +15,9 @@ abstract class AppDatabase extends FloorDatabase{
 final migration1to2 = Migration(1, 2, (db) async{
   await db.execute("ALTER TABLE Country RENAME TO $kCountryTableName");
   await db.execute("ALTER TABLE $kCountryTableName ADD COLUMN updated INT NOT NULL");
-  await db.execute("UPDATE $kCountryTableName SET updated=${(DateTime.now().millisecondsSinceEpoch/1000).toInt()}");
+  await db.execute("UPDATE $kCountryTableName SET updated=${DateTime.now().millisecondsSinceEpoch~/1000}");
 });
 
 final migration2to3 = Migration(2, 3, (db)async{
-  await db.execute("UPDATE $kCountryTableName SET updated=${(DateTime.now().millisecondsSinceEpoch/1000).toInt()}");
+  await db.execute("UPDATE $kCountryTableName SET updated=${DateTime.now().millisecondsSinceEpoch~/1000}");
 });
