@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Record extends Equatable {
+  final int updated;
   final int cases;
   final int todayCases;
   final int todayDeaths;
@@ -9,7 +10,8 @@ class Record extends Equatable {
   final int recovered;
 
   const Record(
-      {required this.cases,
+      {required this.updated,
+      required this.cases,
       required this.todayCases,
       required this.todayDeaths,
       required this.deaths,
@@ -18,6 +20,7 @@ class Record extends Equatable {
 
   @override
   List<Object?> get props => [
+        updated,
         cases,
         todayCases,
         todayDeaths,
@@ -26,4 +29,5 @@ class Record extends Equatable {
         recovered
       ];
 
+  DateTime get updatedTime => DateTime.fromMillisecondsSinceEpoch(updated * 1000);
 }

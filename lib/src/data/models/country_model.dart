@@ -19,6 +19,7 @@ class CountryModel extends Country {
       {required String country,
       required this.countryCode,
       required this.flag,
+      required int updated,
       required int todayCases,
       required int cases,
       required int todayDeaths,
@@ -27,6 +28,7 @@ class CountryModel extends Country {
       required int recovered,
       this.id})
       : super(
+            updated: updated,
             country: country,
             countryCode: countryCode,
             flag: flag,

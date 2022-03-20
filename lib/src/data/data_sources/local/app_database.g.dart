@@ -66,7 +66,7 @@ class _$AppDatabase extends AppDatabase {
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 3,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Country` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `country` TEXT NOT NULL, `countryCode` TEXT NOT NULL, `flag` TEXT NOT NULL, `cases` INTEGER NOT NULL, `todayCases` INTEGER NOT NULL, `todayDeaths` INTEGER NOT NULL, `deaths` INTEGER NOT NULL, `todayRecovered` INTEGER NOT NULL, `recovered` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `FavoritesCountries` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `country` TEXT NOT NULL, `countryCode` TEXT NOT NULL, `flag` TEXT NOT NULL, `updated` INTEGER NOT NULL, `cases` INTEGER NOT NULL, `todayCases` INTEGER NOT NULL, `todayDeaths` INTEGER NOT NULL, `deaths` INTEGER NOT NULL, `todayRecovered` INTEGER NOT NULL, `recovered` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -101,12 +101,13 @@ class _$CountryDao extends CountryDao {
       : _queryAdapter = QueryAdapter(database, changeListener),
         _countryInsertionAdapter = InsertionAdapter(
             database,
-            'Country',
+            'FavoritesCountries',
             (Country item) => <String, Object?>{
                   'id': item.id,
                   'country': item.country,
                   'countryCode': item.countryCode,
                   'flag': item.flag,
+                  'updated': item.updated,
                   'cases': item.cases,
                   'todayCases': item.todayCases,
                   'todayDeaths': item.todayDeaths,
@@ -117,13 +118,14 @@ class _$CountryDao extends CountryDao {
             changeListener),
         _countryUpdateAdapter = UpdateAdapter(
             database,
-            'Country',
+            'FavoritesCountries',
             ['id'],
             (Country item) => <String, Object?>{
                   'id': item.id,
                   'country': item.country,
                   'countryCode': item.countryCode,
                   'flag': item.flag,
+                  'updated': item.updated,
                   'cases': item.cases,
                   'todayCases': item.todayCases,
                   'todayDeaths': item.todayDeaths,
@@ -134,13 +136,14 @@ class _$CountryDao extends CountryDao {
             changeListener),
         _countryDeletionAdapter = DeletionAdapter(
             database,
-            'Country',
+            'FavoritesCountries',
             ['id'],
             (Country item) => <String, Object?>{
                   'id': item.id,
                   'country': item.country,
                   'countryCode': item.countryCode,
                   'flag': item.flag,
+                  'updated': item.updated,
                   'cases': item.cases,
                   'todayCases': item.todayCases,
                   'todayDeaths': item.todayDeaths,
@@ -164,11 +167,12 @@ class _$CountryDao extends CountryDao {
 
   @override
   Future<List<Country>> findALlCountries() async {
-    return _queryAdapter.queryList('SELECT * FROM Country',
+    return _queryAdapter.queryList('SELECT * FROM FavoritesCountries',
         mapper: (Map<String, Object?> row) => Country(
             country: row['country'] as String,
             countryCode: row['countryCode'] as String,
             flag: row['flag'] as String,
+            updated: row['updated'] as int,
             todayCases: row['todayCases'] as int,
             cases: row['cases'] as int,
             todayDeaths: row['todayDeaths'] as int,
@@ -180,11 +184,12 @@ class _$CountryDao extends CountryDao {
 
   @override
   Stream<List<Country>> findALlCountriesStream() {
-    return _queryAdapter.queryListStream('SELECT * FROM Country',
+    return _queryAdapter.queryListStream('SELECT * FROM FavoritesCountries',
         mapper: (Map<String, Object?> row) => Country(
             country: row['country'] as String,
             countryCode: row['countryCode'] as String,
             flag: row['flag'] as String,
+            updated: row['updated'] as int,
             todayCases: row['todayCases'] as int,
             cases: row['cases'] as int,
             todayDeaths: row['todayDeaths'] as int,
@@ -192,13 +197,13 @@ class _$CountryDao extends CountryDao {
             todayRecovered: row['todayRecovered'] as int,
             recovered: row['recovered'] as int,
             id: row['id'] as int?),
-        queryableName: 'Country',
+        queryableName: 'FavoritesCountries',
         isView: false);
   }
 
   @override
   Future<List<String>?> findAllCountriesNames() async {
-    await _queryAdapter.queryNoReturn('SELECT country FROM Country');
+    await _queryAdapter.queryNoReturn('SELECT country FROM FavoritesCountries');
   }
 
   @override

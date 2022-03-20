@@ -17,6 +17,7 @@ class CovidRepositoryImpl implements CovidRepository{
   Future<Either<Failure, List<Country>>> getAllCountriesListData() async{
     try{
       final httpResponse = await _covidApiService.getAllCountriesList();
+      _updatedCountriesInDatabase(httpResponse.data);
       return Right(httpResponse.data);
     }on DioError catch(e){
       return Left(Failure(e.message));
@@ -60,6 +61,19 @@ class CovidRepositoryImpl implements CovidRepository{
       return Right(result);
     }catch (e){
       return Left(Failure(e.toString()));
+    }
+  }
+
+  _updatedCountriesInDatabase(List<Country> downloadedCountries) async {
+    var countriesInDB = await _appDatabase.countryDao.findALlCountries();
+    if(countriesInDB.isEmpty) return null;
+
+    for (var downloadedCountry in downloadedCountries) {
+      for (var inDBCountry in countriesInDB) {
+        if(downloadedCountry.country == inDBCountry.country){
+          _appDatabase.countryDao.updateCountry(downloadedCountry);
+        }
+      }
     }
   }
 

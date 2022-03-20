@@ -1,9 +1,9 @@
 import 'package:covid_app/src/core/routes.gr.dart';
 import 'package:covid_app/src/presentation/cubit/countries_list_cubit.dart';
-import 'package:covid_app/src/presentation/cubit/favorites_countries_cubit.dart';
 import 'package:covid_app/src/presentation/cubit/global_data_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'src/injector.dart';
 
@@ -31,13 +31,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<GlobalDataCubit>(
           create: (context) => injector()..load(),
         ),
-        BlocProvider<FavoritesCountriesCubit>(
-          create: (context) => injector(),
-        ),
       ],
       child: MaterialApp.router(
         routerDelegate: _appRouter.delegate(),
         routeInformationParser: _appRouter.defaultRouteParser(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,
         ),

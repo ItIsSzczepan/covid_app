@@ -1,5 +1,6 @@
 import 'package:covid_app/src/domain/entities/country.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CountryTile extends StatelessWidget {
   final Country country;
@@ -20,16 +21,16 @@ class CountryTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Cases\n${country.todayCases}\n${country.cases}",
+            "${AppLocalizations.of(context)!.cases}\n${country.todayCases}\n${country.cases}",
             textAlign: TextAlign.left,
           ),
           Text(
-            "Deaths\n${country.todayDeaths}\n${country.deaths}",
+            "${AppLocalizations.of(context)!.deaths}\n${country.todayDeaths}\n${country.deaths}",
             textAlign: TextAlign.left,
             style: const TextStyle(color: Colors.red),
           ),
           Text(
-            "Recovered\n${country.todayRecovered}\n${country.recovered}",
+            "${AppLocalizations.of(context)!.recovered}\n${country.todayRecovered}\n${country.recovered}",
             textAlign: TextAlign.left,
             style: const TextStyle(color: Colors.green),
           ),

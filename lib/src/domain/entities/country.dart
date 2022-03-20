@@ -15,6 +15,7 @@ class Country extends Record {
       {required this.country,
       required this.countryCode,
       required this.flag,
+      required int updated,
       required int todayCases,
       required int cases,
       required int todayDeaths,
@@ -23,6 +24,7 @@ class Country extends Record {
       required int recovered,
       this.id})
       : super(
+            updated: updated,
             cases: cases,
             todayCases: todayCases,
             todayDeaths: todayDeaths,
@@ -35,6 +37,7 @@ class Country extends Record {
         country,
         countryCode,
         flag,
+        updated,
         cases,
         todayCases,
         todayDeaths,

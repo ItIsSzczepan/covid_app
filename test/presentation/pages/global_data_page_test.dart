@@ -10,6 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 import 'global_data_page_test.mocks.dart';
 
@@ -20,6 +22,7 @@ void main() {
   late Widget testPage;
 
   const RecordModel testRecord = RecordModel(
+    updated: 12341234,
       todayCases: 2000,
       cases: 4000,
       todayDeaths: 50,
@@ -36,6 +39,8 @@ void main() {
   setUp((){
     _cubit = GlobalDataCubit(_usecase);
     testPage = MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: BlocProvider<GlobalDataCubit>(
         create: (_) => _cubit..load(),
         child: const GlobalDataPage(),
@@ -55,6 +60,37 @@ void main() {
 
     final findShimmers = find.byType(Shimmer);
     expect(findShimmers, findsNWidgets(3));
+  });
+
+  testWidgets("pull and refresh", (WidgetTester tester) async {
+    reset(_usecase);
+    when(_usecase.call())
+        .thenAnswer((realInvocation) async => const Right(testRecord));
+
+    final SemanticsHandle handle = tester.ensureSemantics();
+
+    await tester.pumpWidget(testPage);
+    await tester.pump(const Duration(milliseconds: 100));
+
+    await tester.flingFrom(const Offset(200.0, 150.0), const Offset(0.0, 300.0), 1000.0);
+    await tester.pump();
+
+    expect(
+        tester.getSemantics(find.byType(RefreshProgressIndicator)),
+        matchesSemantics(
+          label: 'Refresh',
+        ));
+
+    await tester
+        .pump(const Duration(seconds: 1)); // finish the scroll animation
+    await tester.pump(
+        const Duration(seconds: 1)); // finish the indicator settle animation
+    await tester.pump(
+        const Duration(seconds: 1)); // finish the indicator hide animation
+
+    verify(_usecase.call()).called(2);
+
+    handle.dispose();
   });
 
   testWidgets("data is displayed", (WidgetTester tester)async{

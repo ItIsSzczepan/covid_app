@@ -3,6 +3,7 @@ import 'package:covid_app/src/presentation/cubit/global_data_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GlobalDataPage extends StatelessWidget {
   const GlobalDataPage({Key? key}) : super(key: key);
@@ -13,47 +14,53 @@ class GlobalDataPage extends StatelessWidget {
     return Scaffold(
       key: const Key("Global Scaffold"),
       appBar: AppBar(
-        title: const Text("Global"),
+        title: Text(AppLocalizations.of(context)!.global),
       ),
       body: SafeArea(
-        child: BlocBuilder<GlobalDataCubit, GlobalDataState>(
-          bloc: cubit,
-          builder: (context, state) {
-            if (state is GlobalDataLoading) {
-              return _buildPlaceholders();
-            }
+        child: RefreshIndicator(
+          onRefresh: () => cubit.load(),
+          child: BlocBuilder<GlobalDataCubit, GlobalDataState>(
+            bloc: cubit,
+            builder: (context, state) {
+              if (state is GlobalDataLoading) {
+                return _buildPlaceholders();
+              }
 
-            if (state is GlobalDataError) {
-              return _buildError(state.message);
-            }
+              if (state is GlobalDataError) {
+                return _buildError(state.message);
+              }
 
-            if (state is GlobalDataDone) {
-              return _buildData(context, state.data);
-            }
+              if (state is GlobalDataDone) {
+                return _buildData(context, state.data);
+              }
 
-            return const Text("");
-          },
+              return const Text("");
+            },
+          ),
         ),
       ),
     );
   }
 
   Widget _buildData(BuildContext context, Record record) {
-    return Column(
-      children: [
-        _buildDataContainer(
-            context, "Cases", record.todayCases, record.cases, Colors.grey),
-        Row(children: [
-          Flexible(
-              flex: 1,
-              child: _buildDataContainer(context, "Deaths", record.todayDeaths,
-                  record.deaths, Colors.red)),
-          Flexible(
-              flex: 1,
-              child: _buildDataContainer(context, "Recovered",
-                  record.todayRecovered, record.recovered, Colors.green))
-        ])
-      ],
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          _buildDataContainer(
+              context, AppLocalizations.of(context)!.cases, record.todayCases, record.cases, Colors.grey),
+          Row(children: [
+            Flexible(
+                flex: 1,
+                child: _buildDataContainer(context, AppLocalizations.of(context)!.deaths, record.todayDeaths,
+                    record.deaths, Colors.red)),
+            Flexible(
+                flex: 1,
+                child: _buildDataContainer(context, AppLocalizations.of(context)!.recovered,
+                    record.todayRecovered, record.recovered, Colors.green))
+          ])
+        ],
+      ),
     );
   }
 
@@ -75,15 +82,15 @@ class GlobalDataPage extends StatelessWidget {
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 4,),
-          const Text(
-            "Today",
+          Text(
+            AppLocalizations.of(context)!.today,
           ),
           Text(
             today.toString(),
             style: Theme.of(context).textTheme.headline6,
           ),
-          const Text(
-            "All",
+          Text(
+            AppLocalizations.of(context)!.all,
           ),
           Text(
             all.toString(),
@@ -124,10 +131,16 @@ class GlobalDataPage extends StatelessWidget {
   }
 
   Widget _buildError(String message) {
-    return Center(
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.red),
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Center(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
       ),
     );
   }

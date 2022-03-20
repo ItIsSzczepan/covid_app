@@ -16,6 +16,8 @@ import 'package:flutter_placeholder_textlines/flutter_placeholder_textlines.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 import '../../models.dart';
 import 'countries_list_page_test.mocks.dart';
@@ -72,6 +74,8 @@ void main() {
         addCountryToFavoritesUseCase, removeCountryFromFavoritesUseCase);
 
     testPage = MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: MultiBlocProvider(providers: [
         BlocProvider<CountriesListCubit>(create: (_) => apiCubit..load()),
         BlocProvider<FavoritesCountriesCubit>(create: (_) => favoritesCubit),
@@ -117,16 +121,43 @@ void main() {
         find.widgetWithText(
             CountryTile, TestModels().exampleList.first.country),
         find.widgetWithText(CountryTile,
-            "Cases\n${TestModels().exampleList.first.todayCases.toString()}\n${TestModels().exampleList.first.cases.toString()}"),
+            "${AppLocalizationsEn().cases}\n${TestModels().exampleList.first.todayCases.toString()}\n${TestModels().exampleList.first.cases.toString()}"),
         find.widgetWithText(CountryTile,
-            "Deaths\n${TestModels().exampleList.first.todayDeaths.toString()}\n${TestModels().exampleList.first.deaths.toString()}"),
+            "${AppLocalizationsEn().deaths}\n${TestModels().exampleList.first.todayDeaths.toString()}\n${TestModels().exampleList.first.deaths.toString()}"),
         find.widgetWithText(CountryTile,
-            "Recovered\n${TestModels().exampleList.first.todayRecovered.toString()}\n${TestModels().exampleList.first.recovered.toString()}"),
+            "${AppLocalizationsEn().recovered}\n${TestModels().exampleList.first.todayRecovered.toString()}\n${TestModels().exampleList.first.recovered.toString()}"),
       ];
 
       for (var value in countryTileDataFinders) {
         expect(value, findsOneWidget);
       }
+    });
+
+    testWidgets("widget should reload data after pull", (WidgetTester tester) async {
+      reset(getAllCountriesListDataUseCase);
+      final SemanticsHandle handle = tester.ensureSemantics();
+
+      await _buildWidget(tester);
+
+      await tester.fling(find.byType(CountryTile).first, const Offset(0.0, 300.0), 1000.0);
+      await tester.pump();
+
+      expect(
+          tester.getSemantics(find.byType(RefreshProgressIndicator)),
+          matchesSemantics(
+            label: 'Refresh',
+          ));
+
+      await tester
+          .pump(const Duration(seconds: 1)); // finish the scroll animation
+      await tester.pump(
+          const Duration(seconds: 1)); // finish the indicator settle animation
+      await tester.pump(
+          const Duration(seconds: 1)); // finish the indicator hide animation
+
+      verify(getAllCountriesListDataUseCase.call()).called(2);
+
+      handle.dispose();
     });
 
     testWidgets(
@@ -260,14 +291,12 @@ void main() {
 
       final findError =
           find.textContaining(TestModels().exampleFailure.message);
-      final findCenter = find.byType(Center);
 
       expect(findError, findsOneWidget);
-      expect(findCenter, findsOneWidget);
     });
   });
 
-  group("app bar", () {
+  group("app bar and search", () {
     testWidgets("widget should contain app bar", (WidgetTester tester) async {
       await _buildWidget(tester);
 
@@ -275,5 +304,87 @@ void main() {
 
       expect(findAppBar, findsOneWidget);
     });
+
+    testWidgets("app bar contain search icon", (WidgetTester tester)async{
+      await _buildWidget(tester);
+
+      final findSearchIconInAppBar = find.widgetWithIcon(AppBar, Icons.search);
+
+      expect(findSearchIconInAppBar, findsOneWidget);
+    });
+
+    testWidgets("app should show text field widget after tap on search icon", (WidgetTester tester)async{
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+
+      expect(findTextField, findsOneWidget);
+    });
+
+    testWidgets("app should hide text field after tap on back arrow", (WidgetTester tester)async{
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+
+      expect(findTextField, findsOneWidget);
+
+      final findBackArrow = find.byIcon(Icons.arrow_back);
+      await tester.tap(findBackArrow);
+      await tester.pump();
+
+      expect(findTextField, findsNothing);
+    });
+
+    testWidgets("app should return countries right for search", (WidgetTester tester) async {
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+      await tester.enterText(findTextField, "pol");
+      await tester.pump(const Duration(seconds: 1));
+
+      final findGermany = find.text("Germany");
+      final findPoland = find.text("Poland");
+
+      expect(findGermany, findsNothing);
+      expect(findPoland, findsOneWidget);
+    });
+
+    testWidgets("app should return all countries after search bar are closed", (WidgetTester tester) async {
+      await _buildWidget(tester);
+
+      final findSearchButton = find.byIcon(Icons.search);
+      await tester.tap(findSearchButton);
+      await tester.pump();
+
+      final findTextField = find.byType(TextField);
+      await tester.enterText(findTextField, "pol");
+      await tester.pump();
+
+      final findGermany = find.text("Germany");
+      final findPoland = find.text("Poland");
+
+      expect(findGermany, findsNothing);
+      expect(findPoland, findsOneWidget);
+
+      final findBackArrow = find.byIcon(Icons.arrow_back);
+      await tester.tap(findBackArrow);
+      await tester.pump();
+
+      expect(findGermany, findsOneWidget);
+      expect(findPoland, findsOneWidget);
+    });
+
   });
 }
